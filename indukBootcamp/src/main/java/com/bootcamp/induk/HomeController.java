@@ -1,4 +1,4 @@
-package com.induk.bootcamp;
+package com.bootcamp.induk;
 
 import java.text.DateFormat;
 import java.util.Date;

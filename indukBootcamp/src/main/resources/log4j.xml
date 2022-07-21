@@ -11,7 +11,7 @@
 	</appender>
 	
 	<!-- Application Loggers -->
-	<logger name="com.induk.bootcamp">
+	<logger name="com.bootcamp.induk">
 		<level value="info" />
 	</logger>
 	
