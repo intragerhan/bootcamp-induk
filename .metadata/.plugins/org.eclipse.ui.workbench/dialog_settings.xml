@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="NewWizardAction">
+		<item key="NewWizardSelectionPage.STORE_SELECTED_ID" value="org.eclipse.jdt.ui.wizards.NewClassCreationWizard"/>
+		<list key="NewWizardSelectionPage.STORE_EXPANDED_CATEGORIES_ID">
+			<item value="org.eclipse.jdt.ui.java"/>
+			<item value="org.eclipse.jpt.jaxb"/>
+		</list>
+	</section>
+	<section name="WorkbenchPreferenceDialogSettings">
+		<item key="DIALOG_X_ORIGIN" value="-242"/>
+		<item key="DIALOG_Y_ORIGIN" value="29"/>
+	</section>
+	<section name="org.eclipse.ui.internal.QuickAccess">
+		<item key="org.eclipse.ui.internal.quickaccess.QuickAccessDialogDIALOG_WIDTH" value="600"/>
+		<item key="org.eclipse.ui.internal.quickaccess.QuickAccessDialogDIALOG_HEIGHT" value="844"/>
+		<item key="org.eclipse.ui.internal.quickaccess.QuickAccessDialogDIALOG_USE_PERSISTED_SIZE" value="true"/>
+		<item key="org.eclipse.ui.internal.quickaccess.QuickAccessDialogDIALOG_USE_PERSISTED_LOCATION" value="false"/>
+		<list key="orderedElements">
+			<item value="search.in.help"/>
+		</list>
+		<list key="orderedProviders">
+			<item value="search.help"/>
+		</list>
+		<list key="textEntries">
+			<item value="1"/>
+		</list>
+		<list key="textArray">
+			<item value="javase-1.6"/>
+		</list>
+	</section>
+</section>

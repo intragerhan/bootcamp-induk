@@ -1,0 +1,12 @@
+package com.bootcamp.induk;
+
+import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.GenericXmlApplicationContext;
+
+public class DBConfigTest {
+	@Test
+	public void dbConnectionTest() throws Exception {
+		ApplicationContext ac = new GenericXmlApplicationContext("file:src/main/webapp/WEB-INF/spring/**/root-context.xml");
+	}
+}

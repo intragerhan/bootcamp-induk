@@ -1,0 +1,18 @@
+package com.induk.bootcamp;
+
+import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public class HomeMapper {
+	
+	@Autowired
+	protected SqlSessionTemplate sqlSession;
+
+	public void home() {
+		System.out.println("------시작-----");
+		System.out.println(sqlSession.selectList("dao.Inquiry.getList"));
+		System.out.println("------끝-----");
+	}
+}

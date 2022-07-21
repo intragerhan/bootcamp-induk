@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="DBConfigTest" project="indukBootcamp" tests="1" started="1" failures="0" errors="1" ignored="0">
+  <testsuite name="com.bootcamp.induk.DBConfigTest" time="2.346">
+    <testcase name="springJdbcConnectionTest" classname="com.bootcamp.induk.DBConfigTest" time="2.346">
+      <error>java.sql.SQLSyntaxErrorException: Access denied for user 'coding'@'localhost' to database 'springbasic'&#13;
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:118)&#13;
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:95)&#13;
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)&#13;
+	at com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:862)&#13;
+	at com.mysql.cj.jdbc.ConnectionImpl.&lt;init&gt;(ConnectionImpl.java:444)&#13;
+	at com.mysql.cj.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:230)&#13;
+	at com.mysql.cj.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:226)&#13;
+	at java.sql.DriverManager.getConnection(Unknown Source)&#13;
+	at java.sql.DriverManager.getConnection(Unknown Source)&#13;
+	at org.springframework.jdbc.datasource.DriverManagerDataSource.getConnectionFromDriverManager(DriverManagerDataSource.java:173)&#13;
+	at org.springframework.jdbc.datasource.DriverManagerDataSource.getConnectionFromDriver(DriverManagerDataSource.java:164)&#13;
+	at org.springframework.jdbc.datasource.AbstractDriverBasedDataSource.getConnectionFromDriver(AbstractDriverBasedDataSource.java:149)&#13;
+	at org.springframework.jdbc.datasource.AbstractDriverBasedDataSource.getConnection(AbstractDriverBasedDataSource.java:119)&#13;
+	at com.bootcamp.induk.DBConfigTest.springJdbcConnectionTest(DBConfigTest.java:19)&#13;
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)&#13;
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)&#13;
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)&#13;
+	at java.lang.reflect.Method.invoke(Unknown Source)&#13;
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)&#13;
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)&#13;
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)&#13;
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:20)&#13;
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:76)&#13;
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)&#13;
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:193)&#13;
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:52)&#13;
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:191)&#13;
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:42)&#13;
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:184)&#13;
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)&#13;
+	at org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:89)&#13;
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:41)&#13;
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:542)&#13;
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:770)&#13;
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:464)&#13;
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:210)&#13;
+&#13;
+</error>
+    </testcase>
+  </testsuite>
+</testrun>

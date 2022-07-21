@@ -1,0 +1,5 @@
+package com.bootcamp.induk.config;
+
+public class DBConfig {
+	
+}

@@ -1,0 +1,9 @@
+INDEX VERSION 1.131+C:\gitCommitFolder\bootcamp-induk\.metadata\.plugins\org.eclipse.jdt.core
+1507045808.index
+2679078566.index
+573719278.index
+3112003576.index
+3098596952.index
+1983467084.index
+4042415852.index
+586431514.index
