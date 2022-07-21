@@ -1,4 +1,0 @@
-INDEX VERSION 1.4+C:\gitCommitFolder\bootcamp-induk\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
-3112003576.index
-2665922262.index
-3167650320.index
