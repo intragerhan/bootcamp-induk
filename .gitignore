@@ -26,11 +26,13 @@ hs_err_pid
 
 # IDE Settings File #
 .settings/
-/.target/
+.target
 Servers/
 .classpath
 .project
 .springBeans
-target/
+*/target/*
+/classes/
+/test-classes/
 
 .deployables
