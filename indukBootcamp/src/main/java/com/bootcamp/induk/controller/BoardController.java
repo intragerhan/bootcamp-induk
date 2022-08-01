@@ -1,5 +1,8 @@
 package com.bootcamp.induk.controller;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,10 +42,8 @@ public class BoardController {
 		String writer = (String) session.getAttribute("id");
 		boardDto.setWriter(writer);
 		
-		try {
-			int rowCnt = boardService.write(boardDto);	// insert
-			
-			if(rowCnt != 1) 
+		try {			
+			if(boardService.write(boardDto) != 1) 
 				throw new Exception("Write failed");
 			
 			rattr.addFlashAttribute("msg", "write_success");
@@ -51,6 +52,7 @@ public class BoardController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			m.addAttribute("boardDto", boardDto); // m.addAttribute(boardDto);
+			m.addAttribute("mode", "new");
 			m.addAttribute("msg", "write_err");
 			return "board";
 		}
@@ -88,6 +90,9 @@ public class BoardController {
 			List<BoardDto> list = boardService.getSearchResultPage(sc);
 			m.addAttribute("list", list);
 			m.addAttribute("ph", pageHandler);
+			
+			Instant startOfToday = LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant();
+			m.addAttribute("startOfToday", startOfToday.toEpochMilli());
 		} catch (Exception e) {
 			e.printStackTrace();
 			m.addAttribute("msg", "list_err");
@@ -97,7 +102,7 @@ public class BoardController {
 	}
 	
 	@PostMapping("/modify")
-	public String modify(BoardDto boardDto, Integer page, Integer pageSize, Model m, HttpSession session, RedirectAttributes rattr) {
+	public String modify(BoardDto boardDto, SearchCondition sc, Model m, HttpSession session, RedirectAttributes rattr) {
 		
 		String writer = (String) session.getAttribute("id");
 		boardDto.setWriter(writer);
@@ -105,17 +110,13 @@ public class BoardController {
 		try {			
 			if(boardService.modify(boardDto) != 1)
 				throw new Exception("Modify failed");
-		
-			rattr.addAttribute("page", page);
-			rattr.addAttribute("pageSize", pageSize);
+
 			rattr.addFlashAttribute("msg", "modify_success");
 			
-			return "redirect:/board/list";
+			return "redirect:/board/list" + sc.getQueryString();
 		} catch (Exception e) {
 			e.printStackTrace();
 			m.addAttribute(boardDto);
-			m.addAttribute("page", page);
-			m.addAttribute("pageSize", pageSize);
 			m.addAttribute("msg", "modify_err");
 			
 			return "board";	// 등록하려던 내용을 보여줘야 함
@@ -123,7 +124,7 @@ public class BoardController {
 	}
 	
 	@PostMapping("/remove")
-	public String remove(Integer bno, Integer page, Integer pageSize, Model m, HttpSession session, RedirectAttributes rattr) {
+	public String remove(Integer bno, SearchCondition sc, Model m, HttpSession session, RedirectAttributes rattr) {
 		String writer = (String) session.getAttribute("id");
 		String msg = "delete_success";
 		
@@ -135,14 +136,11 @@ public class BoardController {
 			msg = "delete_err";
 		}
 		
-		rattr.addAttribute("page", page);
-		rattr.addAttribute("pageSize", pageSize);
 		rattr.addFlashAttribute("msg", msg);
 		
-		return "redirect:/board/list";
+		return "redirect:/board/list" + sc.getQueryString();
 	}
 	
-
 	private boolean loginCheck(HttpServletRequest request) {
 		// 세션을 얻어서(이때 false는 session이 없어도 새로 생성하지 않는다. 반환값 null)
 		HttpSession session = request.getSession(false);

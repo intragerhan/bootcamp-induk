@@ -18,19 +18,19 @@
 	
 	<insert id="insert" parameterType="BoardDto">
 		INSERT INTO board
-			(title, content, writer)
+			(title, contents, writer)
 		VALUES
-			(#{title}, #{content}, #{writer})
+			(#{title}, #{contents}, #{writer})
 	</insert>
 	
 	<select id="selectAll" resultType="BoardDto">
-		SELECT bno, title, content, writer, view_cnt, comment_cnt, reg_date
+		SELECT bno, title, contents, writer, view_cnt, reply_cnt, reg_date
 		FROM board
 		ORDER BY reg_date DESC, bno DESC
 	</select>
 	
 	<sql id="selectFromBoard">
-		SELECT bno, title, content, writer, view_cnt, comment_cnt, reg_date
+		SELECT bno, title, contents, writer, view_cnt, reply_cnt, reg_date
 		FROM board
 	</sql>
 	
@@ -48,14 +48,8 @@
 	<update id="update" parameterType="BoardDto">
 		UPDATE board
 		SET title = #{title}
-		, content = #{content}
-		, up_date = now()
-		WHERE bno = #{bno}
-	</update>
-	
-	<update id="updateCommentCnt" parameterType="map">
-		UPDATE board
-		SET comment_cnt = comment_cnt + #{cnt}
+		, contents = #{contents}
+		, up_date = sysdate
 		WHERE bno = #{bno}
 	</update>
 	
@@ -68,23 +62,22 @@
 	<sql id="searchCondition">
 		<choose>
 			<when test='option=="T"'>
-				and title like concat('%', #{keyword}, '%')
+				and title like ('%' || #{keyword} || '%')
 			</when>
 			<when test='option=="W"'>
-				and writer like concat('%', #{keyword}, '%')
+				and writer like ('%' || #{keyword} || '%')
 			</when>
 			<otherwise>
-				and (title like concat('%', #{keyword}, '%')
-				or content like concat('%', #{keyword}, '%'))
+				and (title like ('%' || #{keyword} || '%')
+				or contents like ('%' || #{keyword} || '%'))
 			</otherwise>
 		</choose>
 	</sql>
 	
 	<select id="searchSelectPage" parameterType="SearchCondition" resultType="BoardDto">
-		select bno, title, content, writer, view_cnt, comment_cnt, reg_Date
+		select bno, title, contents, writer, view_cnt, reply_cnt, reg_Date
 		from board
-		where true
-		<include refid="searchCondition" />
+		where<include refid="searchCondition" />
 		order by reg_Date desc, bno desc
 			limit #{offset}, #{pageSize}
 	</select>
@@ -92,7 +85,12 @@
 	<select id="searchResultCnt" parameterType="SearchCondition" resultType="int">
 		select count(*)
 		from board
-		where true
-		<include refid="searchCondition" />
+		where<include refid="searchCondition" />
 	</select>
+	
+	<update id="updateCommentCnt" parameterType="map">
+		UPDATE board
+		set reply_cnt = reply_cnt + #{cnt}
+		where bno = #{bno}
+	</update>
 </mapper>

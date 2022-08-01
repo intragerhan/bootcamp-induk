@@ -1,4 +1,4 @@
-//package com.bootcamp.induk;
+//package com.study.ch4;
 //
 //import static org.junit.Assert.assertTrue;
 //
@@ -6,7 +6,7 @@
 //import org.junit.runner.RunWith;
 //import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 //
-//import com.bootcamp.induk.domain.PageHandler;
+//import com.study.ch4.domain.PageHandler;
 //
 ////@RunWith(SpringJUnit4ClassRunner.class)
 //public class PageHandlerTest {

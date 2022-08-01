@@ -2,14 +2,23 @@ package com.bootcamp.induk.domain;
 
 import org.springframework.web.util.UriComponentsBuilder;
 
+import static java.lang.Math.*;
+
 public class SearchCondition {
 	private Integer page = 1;
-	private Integer pageSize = 10;
+	private Integer pageSize = DEFAULT_PAGE_SIZE;
 //	private Integer offset = 0;
 	private String keyword = "";
 	private String option = "";	
 	
+    public static final int MIN_PAGE_SIZE = 5;
+    public static final int DEFAULT_PAGE_SIZE = 10;
+    public static final int MAX_PAGE_SIZE = 50;
+	
 	public SearchCondition() {}
+    public SearchCondition(Integer page, Integer pageSize) {
+        this(page, pageSize, "", "");
+    }
 	public SearchCondition(Integer page, Integer pageSize, String keyword, String option) {
 		this.page = page;
 		this.pageSize = pageSize;
@@ -38,14 +47,15 @@ public class SearchCondition {
 	public void setPage(Integer page) {
 		this.page = page;
 	}
+	
 	public Integer getPageSize() {
 		return pageSize;
 	}
 	public void setPageSize(Integer pageSize) {
 		this.pageSize = pageSize;
-	}
-	public Integer getOffset() {
-		return (page - 1) * pageSize;
+		
+		// MIN_PAGE_SIZE <= pageSize <= MAX_PAGE_SIZE
+		this.pageSize = max(MIN_PAGE_SIZE, min(this.pageSize, MAX_PAGE_SIZE));
 	}
 
 	public String getKeyword() {
@@ -54,6 +64,7 @@ public class SearchCondition {
 	public void setKeyword(String keyword) {
 		this.keyword = keyword;
 	}
+	
 	public String getOption() {
 		return option;
 	}
@@ -61,6 +72,10 @@ public class SearchCondition {
 		this.option = option;
 	}
 
+	public Integer getOffset() {
+		return (page - 1) * pageSize;
+	}
+	
 	@Override
 	public String toString() {
 		return "SearchCondition ["

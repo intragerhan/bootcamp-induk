@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="com.bootcamp.induk.dao.ReplyMapper">
+	<delete id="deleteAll" parameterType="int">
+		DELETE FROM reply
+		WHERE bno = ${bno}
+	</delete>
+	
+	<select id="count" parameterType="int" resultType="int">
+		SELECT count(*) FROM reply
+		WHERE bno = #{bno}
+	</select>
+	
+	<delete id="delete" parameterType="map">
+		DELETE FROM reply WHERE cno = #{cno} AND replier = #{replier}
+	</delete>
+	
+	<insert id="insert" parameterType="ReplyDto">
+		INSERT INTO reply
+			(bno, pcno, reply, replier, reg_date, up_date)
+		VALUES
+			(#{bno}, #{pcno}, #{reply}, #{replier}, sysdate, sysdate)
+	</insert>
+	
+	<select id="selectAll" parameterType="int" resultType="ReplyDto">
+		SELECT cno, bno, nvl(pcno, cno) as pcno, reply, replier, reg_date, up_date
+		FROM reply
+		WHERE bno = #{bno}
+		ORDER BY pcno asc, cno asc; 
+	</select>
+	
+	<select id="select" parameterType="int" resultType="ReplyDto">
+		SELECT cno, bno, pcno, reply, replier, reg_date, up_date
+		FROM reply
+		WHERE cno = #{cno}
+	</select>
+	
+	<update id="update" parameterType="ReplyDto">
+		UPDATE reply
+		SET reply = #{reply}
+			, up_date = sysdate
+		WHERE cno = #{cno} and replier = #{replier}
+	</update>
+	
+</mapper>

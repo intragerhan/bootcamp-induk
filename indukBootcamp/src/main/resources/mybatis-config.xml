@@ -7,5 +7,6 @@
 	<typeAliases>
 		<typeAlias alias="BoardDto" type="com.bootcamp.induk.domain.BoardDto" />
 		<typeAlias alias="SearchCondition" type="com.bootcamp.induk.domain.SearchCondition" />
+		<typeAlias alias="ReplyDto" type="com.bootcamp.induk.domain.ReplyDto" />		
 	</typeAliases>
 </configuration>

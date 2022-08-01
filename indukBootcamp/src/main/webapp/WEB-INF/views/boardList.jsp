@@ -24,17 +24,19 @@
       text-decoration: none;
       color: black;
     }
-    button,
-    input {
+   
+    button, input {
       border: none;
       outline: none;
     }
+    
     .board-container {
       width: 60%;
       height: 1200px;
       margin: 0 auto;
       /* border: 1px solid black; */
     }
+    
     .search-container {
       background-color: rgb(253, 253, 250);
       width: 100%;
@@ -73,6 +75,7 @@
     .search-input::placeholder {
       color: gray;
     }
+    
     .search-button {
       /* 메뉴바의 검색 버튼 아이콘  */
       width: 20%;
@@ -87,32 +90,39 @@
     .search-button:hover {
       color: rgb(165, 165, 165);
     }
+    
     table {
       border-collapse: collapse;
       width: 100%;
       border-top: 2px solid rgb(39, 39, 39);
     }
+    
     tr:nth-child(even) {
       background-color: #f0f0f070;
     }
-    th,
-    td {
+   
+     th, td {
       width:300px;
       text-align: center;
       padding: 10px 12px;
       border-bottom: 1px solid #ddd;
     }
+    
     td {
       color: rgb(53, 53, 53);
     }
+    
     .no      { width:150px;}
     .title   { width:50%;  }
+    
     td.title   { text-align: left;  }
     td.writer  { text-align: left;  }
     td.viewcnt { text-align: right; }
+    
     td.title:hover {
       text-decoration: underline;
     }
+    
     .paging {
       color: black;
       width: 100%;
@@ -135,6 +145,7 @@
       margin-top: 50px;
       margin : auto;
     }
+    
     .btn-write {
       background-color: rgb(236, 236, 236); /* Blue background */
       border: none; /* Remove borders */
@@ -153,7 +164,7 @@
 <body>
 <div id="menu">
   <ul>
-    <li id="logo">Induk-Univ.</li>
+    <li id="logo">Induk Univ.</li>
     <li><a href="<c:url value='/'/>">Home</a></li>
     <li><a href="<c:url value='/board/list'/>">Board</a></li>
     <li><a href="<c:url value='${loginOutLink}'/>">${loginOut}</a></li>
@@ -166,6 +177,7 @@
   if(msg=="LIST_ERR")  alert("게시물 목록을 가져오는데 실패했습니다. 다시 시도해 주세요.");
   if(msg=="READ_ERR")  alert("삭제되었거나 없는 게시물입니다.");
   if(msg=="DEL_ERR")   alert("삭제되었거나 없는 게시물입니다.");
+  
   if(msg=="DEL_OK")    alert("성공적으로 삭제되었습니다.");
   if(msg=="WRT_OK")    alert("성공적으로 등록되었습니다.");
   if(msg=="MOD_OK")    alert("성공적으로 수정되었습니다.");
@@ -197,7 +209,7 @@
       <c:forEach var="boardDto" items="${list}">
         <tr>
           <td class="no">${boardDto.bno}</td>
-          <td class="title"><a href="<c:url value="/board/read${ph.sc.queryString}&bno=${boardDto.bno}"/>"><c:out value="${boardDto.title}"/></a></td>
+          <td class="title"><a href="<c:url value="/board/read${ph.sc.queryString}&bno=${boardDto.bno}"/>">${boardDto.title}</a></td>
           <td class="writer">${boardDto.writer}</td>
           <c:choose>
             <c:when test="${boardDto.reg_date.time >= startOfToday}">
@@ -222,7 +234,7 @@
             <a class="page" href="<c:url value="/board/list${ph.sc.getQueryString(ph.beginPage-1)}"/>">&lt;</a>
           </c:if>
           <c:forEach var="i" begin="${ph.beginPage}" end="${ph.endPage}">
-            <a class="page ${i==ph.sc.page? "paging-active" : ""}" href="<c:url value="/board/list${ph.sc.getQueryString(i)}"/>">${i}</a>
+            <a class="page ${i==ph.sc.page? 'paging-active' : ''}" href="<c:url value="/board/list${ph.sc.getQueryString(i)}"/>">${i}</a>
           </c:forEach>
           <c:if test="${ph.showNext}">
             <a class="page" href="<c:url value="/board/list${ph.sc.getQueryString(ph.endPage+1)}"/>">&gt;</a>

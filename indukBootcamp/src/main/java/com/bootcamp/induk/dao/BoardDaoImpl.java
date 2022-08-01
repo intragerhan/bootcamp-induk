@@ -14,9 +14,9 @@ import com.bootcamp.induk.domain.SearchCondition;
 @Repository
 public class BoardDaoImpl implements BoardDao {
 	@Autowired
-	SqlSession session;
+	private SqlSession session;
 	
-	private static String namespace = "com.study.ch4.dao.BoardMapper.";
+	private static String namespace = "com.bootcamp.induk.dao.BoardMapper.";
 	
 	@Override
 	public int count() throws Exception {
@@ -77,4 +77,12 @@ public class BoardDaoImpl implements BoardDao {
 	public List<BoardDto> searchSelectPage(SearchCondition sc) throws Exception {
 		return session.selectList(namespace + "searchSelectPage", sc);
 	}	// List<E> selectList(String statement, Object parameter)
+
+	@Override
+	public int updateCommentCnt(Integer bno, int cnt) {
+		Map map = new HashMap();
+		map.put("cnt", cnt);
+		map.put("bno", bno);
+		return session.update(namespace + "updateCommentCnt", map);
+	}
 }

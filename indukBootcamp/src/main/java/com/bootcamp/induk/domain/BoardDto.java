@@ -6,10 +6,10 @@ import java.util.Objects;
 public class BoardDto {
 	private Integer bno;
 	private String title;
-	private String content;
+	private String contents;
 	private String writer;
 	private int view_cnt;
-	private int comment_cnt;	// 댓글 개수
+	private int reply_cnt;	// 댓글 개수
 	private Date reg_date;	
 	
 	@Override
@@ -19,19 +19,19 @@ public class BoardDto {
 		BoardDto boardDto = (BoardDto) obj;
 		return Objects.equals(bno, boardDto.bno) 
 				&& Objects.equals(title, boardDto.title)
-				&& Objects.equals(content, boardDto.content)
+				&& Objects.equals(contents, boardDto.contents)
 				&& Objects.equals(writer, boardDto.writer);
 	}
 	
 	@Override
 	public int hashCode() {
-		return Objects.hash(bno, title, content, writer);
+		return Objects.hash(bno, title, contents, writer);
 	}
 	
 	public BoardDto() { this("", "", ""); }
-	public BoardDto(String title, String content, String writer) {
+	public BoardDto(String title, String contents, String writer) {
 		this.title = title;
-		this.content = content;
+		this.contents = contents;
 		this.writer = writer;
 	}
 	
@@ -47,11 +47,11 @@ public class BoardDto {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	public String getContent() {
-		return content;
+	public String getContents() {
+		return contents;
 	}
-	public void setContent(String content) {
-		this.content = content;
+	public void setContents(String contents) {
+		this.contents = contents;
 	}
 	public String getWriter() {
 		return writer;
@@ -65,11 +65,11 @@ public class BoardDto {
 	public void setView_cnt(int view_cnt) {
 		this.view_cnt = view_cnt;
 	}
-	public int getComment_cnt() {
-		return comment_cnt;
+	public int getReply_cnt() {
+		return reply_cnt;
 	}
-	public void setComment_cnt(int comment_cnt) {
-		this.comment_cnt = comment_cnt;
+	public void setReply_cnt(int reply_cnt) {
+		this.reply_cnt = reply_cnt;
 	}
 	public Date getReg_date() {
 		return reg_date;
@@ -83,10 +83,10 @@ public class BoardDto {
 		return "BoardDto "
 				+ "[bno=" + bno 
 				+ ", title=" + title + '\''
-				+ ", content=" + content + '\''
+				+ ", contents=" + contents + '\''
 				+ ", writer=" + writer + '\''
 				+ ", view_cnt=" + view_cnt 
-				+ ", comment_cnt=" + comment_cnt 
+				+ ", reply_cnt=" + reply_cnt 
 				+ ", reg_date=" + reg_date 
 				+ ']';
 	}
