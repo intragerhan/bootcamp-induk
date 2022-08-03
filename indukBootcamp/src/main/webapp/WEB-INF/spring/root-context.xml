@@ -20,7 +20,7 @@
 	  <!-- 오라클 사용자 이름 -->
 	  <property name="username" value="coding"  />
 	  <!-- 오라클 사용자 비밀번호 -->
-	  <property name="password" value="cometrue"  />
+	  <property name="password" value="cometrue" />
 	</bean>
 
 	<!-- MySQL -->		

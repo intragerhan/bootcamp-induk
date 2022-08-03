@@ -62,30 +62,32 @@
 	<sql id="searchCondition">
 		<choose>
 			<when test='option=="T"'>
-				and title like ('%' || #{keyword} || '%')
+				title like '%' || #{keyword} || '%'
 			</when>
 			<when test='option=="W"'>
-				and writer like ('%' || #{keyword} || '%')
+				writer like '%' || #{keyword} || '%'
 			</when>
 			<otherwise>
-				and (title like ('%' || #{keyword} || '%')
-				or contents like ('%' || #{keyword} || '%'))
+				(title like '%' || #{keyword} || '%'
+				or contents like '%' || #{keyword} || '%')
 			</otherwise>
 		</choose>
 	</sql>
 	
 	<select id="searchSelectPage" parameterType="SearchCondition" resultType="BoardDto">
-		select bno, title, contents, writer, view_cnt, reply_cnt, reg_Date
+		select bno, title, contents, writer, view_cnt, reply_cnt, reg_date
 		from board
-		where<include refid="searchCondition" />
-		order by reg_Date desc, bno desc
+		where
+		<include refid="searchCondition" />
+		order by reg_date desc, bno desc
 			limit #{offset}, #{pageSize}
 	</select>
 	
 	<select id="searchResultCnt" parameterType="SearchCondition" resultType="int">
 		select count(*)
 		from board
-		where<include refid="searchCondition" />
+		where
+		<include refid="searchCondition" />
 	</select>
 	
 	<update id="updateCommentCnt" parameterType="map">

@@ -61,7 +61,7 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public int insertUser(User user) throws Exception {
 		int rowCnt = 0;
-		String sql = "insert into user_info values (?, ?, ?, ?, ?, ?, now())";
+		String sql = "insert into user_info values (?, ?, ?, ?, ?, ?, sysdate)";
 		
 		try(
 			Connection conn = ds.getConnection();
