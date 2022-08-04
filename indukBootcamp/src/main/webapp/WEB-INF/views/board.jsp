@@ -85,8 +85,8 @@
 			<form action="" class="frm" id="form" method="post">
 				<input type="hidden" name="bno" value="${boardDto.bno}">
 				
-				<input type="text" name="title" value="${boardDto.title}" placeholder="제목을 입력해주세요" ${mode == "new" ? '' : "readonly='readonly'"}>
-				<textarea name="contents" rows="20" placeholder="내용을 입력해주세요" ${mode == "new" ? '' : "readonly='readonly'"}>${boardDto.contents}</textarea><br>
+				<input type="text" name="title" value="${boardDto.title}" placeholder="제목을 입력해주세요" ${mode == "new" ? "" : "readonly='readonly'"}>
+				<textarea name="contents" rows="20" placeholder="내용을 입력해주세요" ${mode == "new" ? "" : "readonly='readonly'"}>${boardDto.contents}</textarea><br>
 				
 				<c:if test="${mode eq 'new'}">
 					<button type="button" id="writeBtn" class="btn btn-write"><i class="fa fa-pencil"></i> 등록</button>
@@ -112,9 +112,9 @@
 						return false;
 					}
 					
-					if(form.content.value == "") {
+					if(form.contents.value == "") {
 						alert("내용을 입력해주세요");
-						form.content.focus();
+						form.contents.focus();
 						return false;
 					}
 					return true;
@@ -129,14 +129,10 @@
 					form.attr("action", "<c:url value='/board/write'/>");
 					form.attr("method", "post");
 					
-					if(formCheck()) {
-						form.submit();
-					}
+					if(formCheck())
+					form.submit();
 				});
-			
-				$('#listBtn').on("click", function() {
-					location.href = "<c:url value='/board/list${ph.sc.getQueryString()}'/>";
-				});
+
 				
 				$('#modifyBtn').on("click", function() {
 					let form = $('#form');
@@ -152,7 +148,7 @@
 					}
 					
 					// 2. 수정 상태이면, 수정된 내용을 서버로 전송					
-					form.attr("action", "<c:url value='/board/modify${ph.sc.getQueryString()}'/>");
+					form.attr("action", "<c:url value='/board/modify${searchCondition.queryString}'/>");
 					form.attr("method", "post");
 					
 					if(formCheck()) {
@@ -164,10 +160,14 @@
 					if(!confirm("정말로 삭제하시겠습니까?")) return;
 					
 					let form = $('#form');
-					form.attr("action", "<c:url value='/board/remove${ph.sc.getQueryString()}'/>");
+					form.attr("action", "<c:url value='/board/remove${searchCondition.queryString}'/>");
 					form.attr("method", "post");
 					form.submit();
-				});				
+				});	
+				
+				$('#listBtn').on("click", function() {
+					location.href = "<c:url value='/board/list${searchCondition.queryString}'/>";
+				});
 			});
 		</script>
 	</body>

@@ -1,4 +1,4 @@
-package com.bootcamp.induk;
+package com.bootcamp.induk.dao;
 
 import static org.junit.Assert.assertTrue;
 
@@ -31,12 +31,12 @@ public class BoardDaoImplTest {
 			boardDao.insert(boardDto);
 		}
 		
-		SearchCondition sc = new SearchCondition(1, 10, "title2", "T");	// title2%
+		SearchCondition sc = new SearchCondition(1, 20, "title2", "T");	// title2%
 		List<BoardDto> list = boardDao.searchSelectPage(sc);
-//		System.out.println("list = " + list);
+		System.out.println("list = " + list);
 		assertTrue(list.size() == 2);	// 1 ~ 20, title2, title20
 		
-		sc = new SearchCondition(1, 10, "asdf2", "W");	// asdf2%
+		sc = new SearchCondition(1, 20, "asdf2", "W");	// asdf2%
 		list = boardDao.searchSelectPage(sc);
 		assertTrue(list.size() == 2);	// 1 ~ 20, asdf2, asdf20
 	}
@@ -62,8 +62,8 @@ public class BoardDaoImplTest {
 	@Test
 	public void insertTestData() throws Exception {
 		boardDao.deleteAll();
-		for(int i = 1; i <= 220; i++) {
-			BoardDto boardDto = new BoardDto("title" + i, "no content", "asdf");
+		for(int i = 1; i <= 200; i++) {
+			BoardDto boardDto = new BoardDto("title" + i, "no content" + i, "asdf");
 			boardDao.insert(boardDto);
 		}
 	}
@@ -183,7 +183,7 @@ public class BoardDaoImplTest {
 		}
 		
 		Map map = new HashMap();
-		map.put("offset", 0);
+		map.put("page", 1);
 		map.put("pageSize", 3);
 		
 		List<BoardDto> list = boardDao.selectPage(map);
@@ -192,20 +192,29 @@ public class BoardDaoImplTest {
 		assertTrue(list.get(2).getTitle().equals("8"));
 		
 		map = new HashMap();
-		map.put("offset", 0);
+		map.put("page", 1);
 		map.put("pageSize", 1);
 		
 		list = boardDao.selectPage(map);
 		assertTrue(list.get(0).getTitle().equals("10"));
 		
 		map = new HashMap();
-		map.put("offset", 7);
-		map.put("pageSize", 3);
+		map.put("page", 1);
+		map.put("pageSize", 10);
 		
 		list = boardDao.selectPage(map);
-		assertTrue(list.get(0).getTitle().equals("3"));
-		assertTrue(list.get(1).getTitle().equals("2"));
-		assertTrue(list.get(2).getTitle().equals("1"));
+		System.out.println(list.get(0).getTitle());
+		System.out.println(list.get(1).getTitle());
+		System.out.println(list.get(2).getTitle());
+		System.out.println(list.get(3).getTitle());
+		System.out.println(list.get(4).getTitle()); // 6
+ 		System.out.println(list.get(5).getTitle()); // 5
+		System.out.println(list.get(6).getTitle()); // 4
+		System.out.println(list.get(7).getTitle()); // 3
+		
+		assertTrue(list.get(7).getTitle().equals("3"));
+		assertTrue(list.get(8).getTitle().equals("2"));
+		assertTrue(list.get(9).getTitle().equals("1"));
 	}
 	
 	@Test
@@ -238,6 +247,7 @@ public class BoardDaoImplTest {
 		
 		boardDto = boardDao.select(bno);
 		assertTrue(boardDto != null);
+		System.out.println("boardDto.getView_cnt() = " + boardDto.getView_cnt());
 		assertTrue(boardDto.getView_cnt() == 1);
 		
 		assertTrue(boardDao.increaseViewCnt(bno) == 1);
@@ -246,13 +256,4 @@ public class BoardDaoImplTest {
 		assertTrue(boardDto.getView_cnt() == 2);
 	}
 	
-	@Test
-	public void select() throws Exception {
-		boardDao.deleteAll();
-		assertTrue(boardDao != null);
-		System.out.println("boardDao = " + boardDao);
-		BoardDto boardDto = boardDao.select(1);
-		System.out.println("boardDto = " + boardDto);
-		assertTrue(boardDto.getBno().equals(1));
-	}
 }

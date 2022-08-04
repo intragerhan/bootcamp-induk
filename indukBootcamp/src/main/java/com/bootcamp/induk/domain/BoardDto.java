@@ -8,7 +8,7 @@ public class BoardDto {
 	private String title;
 	private String contents;
 	private String writer;
-	private int view_cnt;
+	private int view_cnt;	// 조회수
 	private int reply_cnt;	// 댓글 개수
 	private Date reg_date;	
 	

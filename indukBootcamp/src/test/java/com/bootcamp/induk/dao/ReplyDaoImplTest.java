@@ -1,4 +1,4 @@
-package com.bootcamp.induk;
+package com.bootcamp.induk.dao;
 
 import static org.junit.Assert.assertTrue;
 

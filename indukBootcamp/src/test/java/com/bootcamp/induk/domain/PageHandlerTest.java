@@ -1,3 +1,4 @@
+package com.bootcamp.induk.domain;
 //package com.study.ch4;
 //
 //import static org.junit.Assert.assertTrue;

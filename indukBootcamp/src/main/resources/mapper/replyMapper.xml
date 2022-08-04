@@ -24,11 +24,11 @@
 			(#{bno}, #{pcno}, #{reply}, #{replier}, sysdate, sysdate)
 	</insert>
 	
-	<select id="selectAll" parameterType="int" resultType="ReplyDto">
-		SELECT cno, bno, nvl(pcno, cno) as pcno, reply, replier, reg_date, up_date
+	<select id="selectAll" parameterType="Integer" resultType="ReplyDto">
+		SELECT cno, bno, coalesce(pcno, cno) as pcno, reply, replier, reg_date, up_date
 		FROM reply
 		WHERE bno = #{bno}
-		ORDER BY pcno asc, cno asc; 
+		ORDER BY pcno asc, cno asc
 	</select>
 	
 	<select id="select" parameterType="int" resultType="ReplyDto">
@@ -39,8 +39,7 @@
 	
 	<update id="update" parameterType="ReplyDto">
 		UPDATE reply
-		SET reply = #{reply}
-			, up_date = sysdate
+		SET reply = #{reply}, up_date = sysdate
 		WHERE cno = #{cno} and replier = #{replier}
 	</update>
 	

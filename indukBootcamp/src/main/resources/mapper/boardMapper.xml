@@ -35,14 +35,19 @@
 	</sql>
 	
 	<select id="select" parameterType="int" resultType="BoardDto">
-		<include refid="selectFromBoard" />
+		SELECT bno, title, contents, writer, view_cnt, reply_cnt, reg_date
+		FROM board
 		WHERE bno = #{bno}
 	</select>
 	
 	<select id="selectPage" parameterType="map" resultType="BoardDto">
-		<include refid="selectFromBoard" />
-		ORDER BY reg_date DESC, bno DESC
-		LIMIT #{offset}, #{pageSize}
+		select * 
+		from(
+				select bno, title, contents, writer, view_cnt, reply_cnt, reg_date
+					, row_number() over(ORDER BY reg_date DESC, bno DESC) as rum
+				from board
+			)
+		where rum between ((#{page}-1) * #{pageSize}) and #{pageSize}
 	</select>
 	
 	<update id="update" parameterType="BoardDto">
@@ -53,7 +58,7 @@
 		WHERE bno = #{bno}
 	</update>
 	
-	<update id="increaseViewCnt" parameterType="int">
+	<update id="increaseViewCnt" parameterType="Integer">
 		UPDATE board
 		SET view_cnt = view_cnt + 1
 		WHERE bno = #{bno}
@@ -62,31 +67,33 @@
 	<sql id="searchCondition">
 		<choose>
 			<when test='option=="T"'>
-				title like '%' || #{keyword} || '%'
+				and (title like '%' || #{keyword} || '%')
 			</when>
 			<when test='option=="W"'>
-				writer like '%' || #{keyword} || '%'
+				and (writer like '%' || #{keyword} || '%')
 			</when>
 			<otherwise>
-				(title like '%' || #{keyword} || '%'
-				or contents like '%' || #{keyword} || '%')
+				and ((title like '%' || #{keyword} || '%'
+				or contents like '%' || #{keyword} || '%'))
 			</otherwise>
 		</choose>
 	</sql>
 	
 	<select id="searchSelectPage" parameterType="SearchCondition" resultType="BoardDto">
-		select bno, title, contents, writer, view_cnt, reply_cnt, reg_date
-		from board
-		where
+		select *
+		FROM( 
+				select bno, title, contents, writer, view_cnt, reply_cnt, reg_date
+					, row_number() over(order by reg_date desc, bno desc) as rum
+				FROM board
+			)
+		where (rum between ((#{page}-1) * #{pageSize}) and #{pageSize})
 		<include refid="searchCondition" />
-		order by reg_date desc, bno desc
-			limit #{offset}, #{pageSize}
 	</select>
 	
 	<select id="searchResultCnt" parameterType="SearchCondition" resultType="int">
 		select count(*)
 		from board
-		where
+		where (1 = 1)
 		<include refid="searchCondition" />
 	</select>
 	
