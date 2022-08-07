@@ -175,8 +175,11 @@ Temporary Items
 .apdisk
 
 ### Gradle ###
+/gradle/
 .gradle
 build/
+gradlew/
+settings.
 
 # Ignore Gradle GUI config
 gradle-app.setting
