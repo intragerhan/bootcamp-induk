@@ -21,10 +21,9 @@
 
 # virtual machine crash logs, see httpwww.java.comendownloadhelperror_hotspot.xml
 hs_err_pid
-/.metadata/
-.metadata
 
-# IDE Settings File #
+
+# Eclipse Settings File #
 .settings/
 .target
 Servers/
@@ -37,5 +36,7 @@ target
 /classes/
 /test-classes/
 /m2e-wtp/
+/.metadata/
+.metadata
 
 .deployables

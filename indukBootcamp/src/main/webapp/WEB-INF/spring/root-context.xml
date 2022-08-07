@@ -23,16 +23,6 @@
 	  <property name="password" value="cometrue" />
 	</bean>
 
-	<!-- MySQL -->		
-	<!-- bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property>
-		<property name="url" value="jdbc:log4jdbc:mysql://localhost:3306/bootcamp?useUnicode=true&amp;characterEncoding=utf8&amp;serverTimezone=UTC&amp;useSSL=false"></property>
-		<! property name="driverClassName" value="com.mysql.cj.jdbc.Driver"></property>
-		<! property name="url" value="jdbc:mysql://localhost:3306/bootcamp?useUnicode=true&amp;characterEncoding=utf8"></property 
-		<property name="username" value="coding"></property>
-		<property name="password" value="cometrue"></property>
-	</bean -->
-	
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource"/>
 		<property name="configLocation" value="classpath:mybatis-config.xml" />
