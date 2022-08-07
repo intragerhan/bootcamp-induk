@@ -175,10 +175,10 @@ Temporary Items
 .apdisk
 
 ### Gradle ###
-/gradle/
+/gradle/*
 .gradle
 build/
-gradlew/
+gradlew
 settings.
 
 # Ignore Gradle GUI config
@@ -197,3 +197,10 @@ gradle-app.setting
 **/build/
 
 # End of https://www.gitignore.io/api/java,macos,gradle,intellij
+
+# Gradle Series
+gradlew
+gradlew.bat
+settings.gradle
+gradle
+application-oracle.properties
