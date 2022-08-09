@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="com.bootcamp.induk.mapper.ReplyMapper">
+
+	<insert id="insertReply" parameterType="com.bootcamp.induk.domain.ReplyDto">
+		INSERT INTO reply
+			(bno, pcno, reply, replier, reg_date, up_date)
+		VALUES
+			(#{bno}, #{pcno}, #{reply}, #{replier}, sysdate, sysdate)
+	</insert>
+
+	<select id="selectReplyList" parameterType="Integer" resultType="com.bootcamp.induk.domain.ReplyDto">
+		SELECT rno, bno, coalesce(pcno, rno) as pcno, reply, replier, reg_date, up_date
+		FROM reply
+		WHERE
+		      bno = #{bno}
+		ORDER BY pcno asc, rno asc
+	</select>
+
+	<select id="selectReply" parameterType="Integer" resultType="com.bootcamp.induk.domain.ReplyDto">
+		SELECT rno, bno, pcno, reply, replier, reg_date, up_date
+		FROM reply
+		WHERE
+		      rno = #{rno}
+	</select>
+
+	<update id="updateReply" parameterType="com.bootcamp.induk.domain.ReplyDto">
+		UPDATE reply
+		SET
+			reply = #{reply}, up_date = sysdate
+		WHERE
+			rno = #{rno} and replier = #{replier}
+	</update>
+
+	<delete id="deleteReply" parameterType="map">
+		DELETE FROM reply
+		WHERE
+		      rno = #{rno} AND replier = #{replier}
+	</delete>
+
+	<select id="getCount" parameterType="Integer" resultType="int">
+		SELECT count(*)
+		FROM reply
+		WHERE
+		      bno = #{bno}
+	</select>
+
+</mapper>

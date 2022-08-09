@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootcamp.induk.mapper.UserMapper">
+
+    <insert id="insertUser" parameterType="com.bootcamp.induk.domain.UserDto">
+        INSERT INTO user_info
+            (id, pwd, name, email, birth, reg_date)
+        VALUES
+            (#{id}, #{pwd}, #{name}, #{email}, #{birth}, #{reg_date})
+    </insert>
+
+    <select id="selectUser" parameterType="String" resultType="com.bootcamp.induk.domain.UserDto">
+        SELECT id, pwd, name, email, birth, reg_date
+        FROM user_info
+        WHERE
+              id = #{id}
+    </select>
+
+    <select id="loginUser" parameterType="map" resultType="com.bootcamp.induk.domain.UserDto">
+        SELECT id, pwd, name, email, birth, reg_date
+        FROM user_info
+        WHERE
+            id = #{id} AND pwd = #{pwd}
+    </select>
+
+    <update id="updateUser" parameterType="com.bootcamp.induk.domain.UserDto">
+        UPDATE user_info
+        SET pwd = #{pwd}
+          , name = #{name}
+          , email = #{email}
+        WHERE
+            id = #{id}
+    </update>
+
+    <delete id="deleteUser" parameterType="String">
+        DELETE FROM user_info
+        where
+              id = #{id}
+    </delete>
+</mapper>
