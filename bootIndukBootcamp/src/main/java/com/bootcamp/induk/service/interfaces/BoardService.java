@@ -13,6 +13,7 @@ public interface BoardService {
 	BoardDto readBoard(Integer bno) throws Exception;
 	int modifyBoard(BoardDto boardDto) throws Exception;
 	int removeBoard(Integer bno, String writer) throws Exception;
+	int removeBoardList() throws Exception;
 
 	int getCount() throws Exception;
 	List<BoardDto> getPage(Map map) throws Exception;

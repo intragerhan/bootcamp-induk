@@ -20,6 +20,7 @@ public interface BoardMapper {
 
     int updateBoard(BoardDto boardDto) throws Exception;
     int deleteBoard(Integer bno, String writer) throws Exception;
+    int deleteBoardList() throws Exception;
 
     int getCount() throws Exception;
     List<BoardDto> selectPage(Map map) throws Exception;

@@ -35,9 +35,7 @@ dependencies {
     implementation 'org.slf4j:slf4j-api:1.7.36'
     implementation 'com.google.guava:guava:31.0.1-jre'
     implementation 'javax.validation:validation-api:2.0.1.Final'
-    compileOnly 'javax.servlet.jsp:javax.servlet.jsp-api:2.3.3'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.3'
-    implementation 'org.apache.commons:commons-dbcp2:2.9.0'
 }
 
 tasks.named('test') {

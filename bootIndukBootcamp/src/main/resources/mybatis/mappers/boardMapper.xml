@@ -69,6 +69,10 @@
 		]]>
 	</delete>
 
+	<delete id="deleteBoardList">
+		DELETE FROM board
+	</delete>
+
 	<update id="updateCommentCnt" parameterType="map">
 		<![CDATA[
 			UPDATE board
