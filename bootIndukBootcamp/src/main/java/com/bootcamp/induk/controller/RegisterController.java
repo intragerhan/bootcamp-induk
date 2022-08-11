@@ -54,8 +54,4 @@ public class RegisterController {
 		}		
 		return "registerForm";
 	}
-	
-	private boolean isValid(UserDto userDto) {
-		return true;
-	}
 }

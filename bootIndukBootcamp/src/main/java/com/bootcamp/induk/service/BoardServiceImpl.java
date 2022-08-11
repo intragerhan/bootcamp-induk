@@ -18,63 +18,59 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class BoardServiceImpl implements BoardService {
 
-	private final SqlSession session;
-
-	private static String namespace = "com.bootcamp.induk.mapper.BoardMapper.";
+	private final BoardMapper boardMapper;
 
 	@Override
 	public int writeBoard(BoardDto boardDto) throws Exception {
-		return session.insert(namespace  + "insertBoard", boardDto);
+		return boardMapper.insertBoard(boardDto);
 	}
 
 	@Override
 	public List<BoardDto> getBoardList() throws Exception {
-		return session.selectList(namespace + "selectBoardList");
+		return boardMapper.selectBoardList();
 	}
 
 	@Override
-	@Transactional
 	public BoardDto readBoard(Integer bno) throws Exception {
-		BoardDto boardDto = session.selectOne(namespace + "selectBoard", bno);
-		session.update(namespace + "increaseViewCnt", bno);
+		BoardDto boardDto = boardMapper.selectBoard(bno);
+		boardMapper.increaseViewCnt(bno);
 		return boardDto;
 	}
 
 	@Override
 	public int modifyBoard(BoardDto boardDto) throws Exception {
-		return session.update(namespace + "updateBoard", boardDto);
+		return boardMapper.updateBoard(boardDto);
 	}
 
 	@Override
 	public int removeBoard(Integer bno, String writer) throws Exception {
-		Map map = new HashMap();
-		map.put("bno", bno);
-		map.put("writer", writer);
-		return session.delete(namespace + "deleteBoard", map);
+		return boardMapper.deleteBoard(bno, writer);
 	}
 
 	@Override
 	public int removeBoardList() throws Exception {
-		return session.delete(namespace + "deleteBoardList");
+		return boardMapper.deleteBoardList();
 	}
 
 	@Override
 	public int getCount() throws Exception {
-		return session.selectOne(namespace + "getCount");
+		return boardMapper.getCount();
 	}
 
 	@Override
 	public List<BoardDto> getPage(Map map) throws Exception {
-		return session.selectList(namespace + "selectPage", map);
+		return boardMapper.selectPage(map);
 	}
 
 	@Override
 	public int getSearchResultCnt(SearchCondition sc) throws Exception {
-		return session.selectOne(namespace + "searchResultCnt", sc);
+		return boardMapper.searchResultCnt(sc);
 	}
-	
+
 	@Override
 	public List<BoardDto> getSearchResultPage(SearchCondition sc) throws Exception {
-		return session.selectList(namespace + "searchSelectPage", sc);
+		return boardMapper.searchSelectPage(sc);
 	}
+
+
 }

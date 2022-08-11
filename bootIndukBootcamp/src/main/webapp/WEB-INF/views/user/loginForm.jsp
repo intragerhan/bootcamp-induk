@@ -9,7 +9,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>인덕부트캠프</title>
-	<link rel="stylesheet" href="<c:url value='/resources/static/css/menu.css'/>">
+	<link rel="stylesheet" href="<c:url value='/static/css/menu.css'/>">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
 	<style>
 		* { box-sizing: border-box; }

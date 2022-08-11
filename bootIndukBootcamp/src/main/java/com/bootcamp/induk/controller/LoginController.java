@@ -36,7 +36,7 @@ public class LoginController {
 		return "redirect:/";
 	}
 	
-	@PostMapping("/login")
+	@PostMapping("")
 	public String login(String id, String pwd, String toURL, boolean rememberId,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
@@ -52,20 +52,12 @@ public class LoginController {
 		HttpSession session = request.getSession();
 		// 세션 객체에 id를 저장
 		session.setAttribute("id", id);
-		
-		if(rememberId) {
-			// 1. 쿠키 생성
-			Cookie cookie = new Cookie("id", id);
-			// 2. 응답 저장
-			response.addCookie(cookie);
-		} else {
-			// 1. 쿠키 삭제
-			Cookie cookie = new Cookie("id", id);
-			cookie.setMaxAge(0);	// 쿠키 삭제
-			// 2. 응답 저장
-			response.addCookie(cookie);
-		}
-		
+
+		// 쿠키 생성
+		Cookie cookie = new Cookie("id", id);
+		if(!rememberId) cookie.setMaxAge(0); // 쿠키 삭제
+		response.addCookie(cookie);
+
 		// 3. 홈으로 이동
 		toURL = toURL == null || toURL.equals("") ? "/" : toURL;
 		
@@ -83,7 +75,4 @@ public class LoginController {
 		}
 		return userDto != null && userDto.getPwd().equals(pwd);
 	}
-	
-	
-	
 }

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>인덕부트캠프</title>
+	<link rel="stylesheet" th:href="@{/css/menu.css}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"/>
+</head>
+<body>
+	<!-- Menu Bar -->
+	<div id="menu" th:fragment="menufragment">
+		<ul>
+			<li id="logo">Induk Univ.</li>
+			<li><a th:href="@{'/'}">Home</a></li>
+			<li><a th:href="@{'board/list'}">Board</a></li>
+			<th:block>
+				<li th:if="${session.login == null}">
+					<a th:href="@{'/login/login'}">
+						<th:block th:text="Login"></th:block>
+					</a>
+				</li>
+				<li th:if="${session.login != null}">
+					<a th:href="@{'/login/logout'}">
+						<th:block th:text="Logout"></th:block>
+					</a>
+				</li>
+			</th:block>
+			<li><a th:href="@{'/register/add'}">Sign in</a></li>
+			<li><a href=""><i class="fa fa-search"></i></a></li>
+		</ul>
+	</div>
+	<!-- /.Menu Bar -->
+</body>
+</html>

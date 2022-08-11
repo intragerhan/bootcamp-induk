@@ -20,8 +20,10 @@ import com.bootcamp.induk.domain.SearchCondition;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(SpringExtension.class)
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@SpringBootTest
 public class BoardMapperTest {
+
+
 
 	@Autowired
 	private BoardMapper boardMapper;
