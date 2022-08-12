@@ -25,7 +25,7 @@ public class LoginController {
 	
 	@GetMapping("/login")
 	public String loginForm() {
-		return "loginForm";
+		return "user/loginForm";
 	}
 	
 	@GetMapping("/logout")
@@ -36,7 +36,7 @@ public class LoginController {
 		return "redirect:/";
 	}
 	
-	@PostMapping("")
+	@PostMapping("/login")
 	public String login(String id, String pwd, String toURL, boolean rememberId,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
@@ -53,10 +53,19 @@ public class LoginController {
 		// 세션 객체에 id를 저장
 		session.setAttribute("id", id);
 
-		// 쿠키 생성
-		Cookie cookie = new Cookie("id", id);
-		if(!rememberId) cookie.setMaxAge(0); // 쿠키 삭제
-		response.addCookie(cookie);
+		if(rememberId) {
+			// 쿠키 생성
+			Cookie cookie = new Cookie("cookie_id", id);
+			cookie.setMaxAge(86400);
+			cookie.setSecure(true);
+			cookie.setHttpOnly(true);
+			cookie.setPath("/");
+			response.addCookie(cookie);
+		} else {
+			Cookie cookie = new Cookie("cookie_id", id);
+			cookie.setMaxAge(0); // 쿠키 삭제
+			response.addCookie(cookie);
+		}
 
 		// 3. 홈으로 이동
 		toURL = toURL == null || toURL.equals("") ? "/" : toURL;

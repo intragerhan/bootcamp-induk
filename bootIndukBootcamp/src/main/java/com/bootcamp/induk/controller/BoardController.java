@@ -32,7 +32,7 @@ public class BoardController {
 	@GetMapping("/write")
 	public String write(Model m) {
 		m.addAttribute("mode", "new");
-		return "board";	// 읽기와 쓰기에 사용, 쓰기에 사용할 때는 mode == new
+		return "board/board";	// 읽기와 쓰기에 사용, 쓰기에 사용할 때는 mode == new
 	}
 	
 	@PostMapping("/write")
@@ -52,7 +52,7 @@ public class BoardController {
 			m.addAttribute("boardDto", boardDto); // m.addAttribute(boardDto);
 			m.addAttribute("mode", "new");
 			m.addAttribute("msg", "write_err");
-			return "board";
+			return "board/board";
 		}
 	}
 	
@@ -60,8 +60,7 @@ public class BoardController {
 	public String read(Integer bno, Integer page, Integer pageSize, RedirectAttributes rattr, Model m) {
 		try {
 			BoardDto boardDto = boardService.readBoard(bno);
-//			m.addAttribute("boardDto", boardDto);	// 아래 문장과 동일
-			m.addAttribute(boardDto);	// 타입의 첫글자가 소문자가 된 게 이름으로 저장됨
+			m.addAttribute("board", boardDto);
 			m.addAttribute("page", page);
 			m.addAttribute("pageSize", pageSize);
 		} catch (Exception e) {
@@ -71,7 +70,7 @@ public class BoardController {
 			rattr.addFlashAttribute("msg", "read_err");
 		}
 		
-		return "board";
+		return "board/board";
 	}
 	
 	@GetMapping("/list")
@@ -96,7 +95,7 @@ public class BoardController {
 			m.addAttribute("msg", "list_err");
 			m.addAttribute("totalCnt", 0);
 		}
-		return "boardList";	// 로그인을 한 상태이면, 게시판 화면으로 이동
+		return "board/boardList";	// 로그인을 한 상태이면, 게시판 화면으로 이동
 	}
 	
 	@PostMapping("/modify")
@@ -117,7 +116,7 @@ public class BoardController {
 			m.addAttribute(boardDto);
 			m.addAttribute("msg", "modify_err");
 			
-			return "board";	// 등록하려던 내용을 보여줘야 함
+			return "board/board";	// 등록하려던 내용을 보여줘야 함
 		}
 	}
 	

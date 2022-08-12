@@ -38,7 +38,7 @@ public class RegisterController {
 	
 	@GetMapping("/add")
 	public String regiter() {
-		return "registerForm";
+		return "user/registerForm";
 	}
 	
 	@PostMapping("/add")
@@ -50,8 +50,8 @@ public class RegisterController {
 			int rowCnt = userService.createUser(userDto);
 			
 			if(rowCnt != FAIL)
-				return "loginForm";
+				return "user/loginForm";
 		}		
-		return "registerForm";
+		return "user/registerForm";
 	}
 }

@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>로그인</title>
-	<link rel="stylesheet" th:href="@{/css/menu.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/menu.css}">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
 	<style>
         * { box-sizing: border-box; }
@@ -58,19 +58,18 @@
 	<form th:action="@{'/login/login'}" method="post" onsubmit="return formCheck(this);">
 		<h3 id="title">Login</h3>
 		<div id="msg" th:if="${param.msg != null}">
-				<i class="fa fa-exclamation-circle">
-					<th:block th:text="${#uris.escapeQueryParam(param.msg)}"></th:block>
-				</i>
+				<i class="fa fa-exclamation-circle">[[${param.msg}]]</i>
 		</div>
-		<input type="text" name="id" th:value="${#request.getCookies()}" placeholder="이메일 입력" autofocus>
+		<input type="text" name="id" value="" placeholder="이메일 입력" autofocus>
 		<input type="password" name="pwd" placeholder="비밀번호">
 		<input type="hidden" name="toURL" th:value="*{param.toURL}">
 		<button>로그인</button>
 		<div>
 			<label>
 				<input type="checkbox" name="rememberId"
-					   value="on" th:checked="${#request.getCookies() != null}">아이디 기억</label> |
-			<a href="">비밀번호 찾기</a>
+					   value="on" th:checked="${#request.getCookies() != null}">아이디 기억
+			</label> |
+			<a href="">비밀번호 찾기</a> |
 			<a th:href="@{'/register/add'}">회원 가입</a>
 		</div>
 		<script>
