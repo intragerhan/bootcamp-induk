@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
 @Mapper
 public interface ReplyMapper {
 	int insertReply(ReplyDto dto) throws Exception;
