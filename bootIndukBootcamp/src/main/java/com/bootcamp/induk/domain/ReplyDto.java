@@ -1,11 +1,17 @@
 package com.bootcamp.induk.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.Objects;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode
 public class ReplyDto {
 	private Integer rno;
 	private Integer bno;
@@ -15,7 +21,6 @@ public class ReplyDto {
 	private Date reg_date;
 	private Date up_date;
 
-	public ReplyDto() {}
 	public ReplyDto(Integer bno, Integer pcno, String reply, String replier) {
 		super();
 		this.bno = bno;

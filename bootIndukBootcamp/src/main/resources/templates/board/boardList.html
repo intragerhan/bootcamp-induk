@@ -173,11 +173,11 @@
 			<div class="search-container">
 				<form th:action="@{'/board/list'}" class="search-form" method="get">
 					<select class="search-option" name="option">
-						<option value="A" th:selected="${ph.sc.option=='A' || ph.sc.option=='' ? 'selected' : ''}">
+						<option value="A" th:selected="${ph.sc.option=='A' || ph.sc.option=='' ? 'selected' : false}">
 							제목+내용
 						</option>
-						<option value="T" th:selected="${ph.sc.option=='T' ? 'selected' : ''}">제목만</option>
-						<option value="W" th:selected="${ph.sc.option=='W' ? 'selected' : ''}">작성자</option>
+						<option value="T" th:selected="${ph.sc.option=='T' ? 'selected' : false}">제목만</option>
+						<option value="W" th:selected="${ph.sc.option=='W' ? 'selected' : false}">작성자</option>
 					</select>
 
 					<input type="text" name="keyword" class="search-input" th:value="${ph.sc.keyword}"
@@ -200,7 +200,7 @@
 				<tr th:each="boardDto : ${list}">
 					<td class="no">[[${boardDto.bno}]]</td>
 					<td class="title">
-						<a th:href="@{'/board/read' + ${ph.sc.queryString} + '&bno=' + ${boardDto.getBno()}}">
+						<a th:href="@{'/board/read' + ${ph.sc.queryString} + '&bno=' + ${boardDto.bno}}">
 							[[${boardDto.title}]]
 						</a>
 					</td>

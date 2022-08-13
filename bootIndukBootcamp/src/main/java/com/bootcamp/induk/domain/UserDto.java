@@ -11,6 +11,9 @@ import java.util.Objects;
 
 // @Setter(AccessLevel.NONE)
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode
 public class UserDto {
 	private String id;
 	private String pwd;

@@ -62,89 +62,57 @@
 	<div th:replace="~{/menu :: menufragment}" />
 
 	<script>
-		let msg = "${msg}";
-		if(msg == "modify_err") alert("수정 중 오류가 발생했습니다.");
+		let msg = '/*[[${msg}]]*/';
+		if(msg == "write_err") alert("등록 중 오류가 발생했습니다.");
 	</script>
 	<div class="container">
 		<h2 class="writing-header">게시물 [[${mode == "new" ? "쓰기" : "읽기"}]]</h2>
-		<form action="" class="frm" id="form" th:object="${boardDto}" th:method="post" >
-			<th:block th:if="${boardDto.bno != null}"><input type="hidden" th:field="*{bno}" /></th:block>
-
-			<input type="text" id="title" th:name="*{title}" th:field="*{title}"
+		<form th:action="@{'/board/write'}" class="frm" id="form" th:method="post" >
+			<input id="title" name="title"
 				   placeholder="제목을 입력해주세요" th:attr="readonly=${mode == 'new'} ? false : 'readonly'" />
-
-			<textarea rows="20" placeholder="내용을 입력해주세요" id="contents" th:name="*{contents}" th:field="*{contents}"
+			<textarea id="contents" rows="20" name="contents" placeholder="내용을 입력해주세요"
 					  th:attr="readonly=${mode == 'new'} ? false : 'readonly'"></textarea><br>
 
-			<button type="button" id="writeBtn" class="btn btn-write" th:if="${mode == 'new'}" >
-				<i class="fa fa-pencil"></i> 등록</button>
-
-			<button type="button" id="writeNewBtn" class="btn btn-write" th:unless="${mode == 'new'}">
-					<i class="fa fa-pencil"></i> 글쓰기</button>
-
-			<th:block th:if="${session.id == boardDto.writer}">
-				<button type="button" id="modifyBtn" class="btn btn-modify"><i class="fa fa-edit"></i> 수정</button>
-				<button type="button" id="removeBtn" class="btn btn-remove"><i class="fa fa-trash"></i> 삭제</button>
+			<input type="text" name="writer" th:value="${session.id}" readonly />
+			<th:block th:if="${mode == 'new'}">
+				<button type="button" id="writeBtn" class="btn btn-write"><i class="fa fa-pencil"></i> 등록</button>
 			</th:block>
-			<a th:href="@{'/board/list' + ${ph.sc.queryString}}" class="btn btn-list">
-				<i class="fa fa-bars"></i> 목록</a>
+			<button type="button" id="listBtn" class="btn btn-list"><i class="fa fa-bars"></i> 목록</button>
 		</form>
 	</div>
 	<script th:inline="javascript">
-        /*<![CDATA[*/
+		/*<![CDATA[*/
 		$(document).ready(function() {	// main()
+
 			let formCheck = function() {
-				let form = document.getElementById("form");
 				if($('#title').value == "") {
 					alert("제목을 입력해주세요");
-                    $('#title').focus();
+					$('#title').focus();
 					return false;
 				}
 
 				if($('#contents').value == "") {
 					alert("내용을 입력해주세요");
-                    $('#contents').focus();
+					$('#contents').focus();
 					return false;
 				}
 				return true;
 			}
 
-			$('#writeNewBtn').on("click", function() {
-                location.href = '/board/write';
-			});
-
-			$('#modifyBtn').on("click", function() {
-				let form = $('#form');
-				let isReadOnly = $("input[name=title]").attr('readonly');
-
-				// 1. 읽기 상태이면 수정 상태로 변경
-				if(isReadOnly == 'readonly') {
-					$(".writer-header").html("게시물 수정");
-					$("input[name=title]").attr('readonly', false);	// title
-					$("textarea").attr('readonly', false);	// content
-					$("#modifyBtn").html("<i class='fa fa-pencil'></i> 등록");
-					return;
-				}
-
-				// 2. 수정 상태이면, 수정된 내용을 서버로 전송
-				form.attr("action", '/board/modify' + /*[[${ph.sc.queryString}]]*/'');
+			$('#writeBtn').on("click", function() {
+				let form = $("#form");
+				form.attr("action", '/board/write');
 				form.attr("method", "post");
 
-				if(formCheck()) {
+				if(formCheck())
 					form.submit();
-				}
 			});
 
-			$('#removeBtn').on("click", function() {
-				if(!confirm("정말로 삭제하시겠습니까?")) return;
-
-				let form = $('#form');
-				form.attr("action", "/board/remove" + /*[[${ph.sc.queryString}]]*/'');
-				form.attr("method", "post");
-				form.submit();
-			});
+            $('#listBtn').on("click", function() {
+                location.href = "/board/list${searchCondition.queryString}";
+            });
 		});
-        /*]]>*/
+		/*]]>*/
 	</script>
 </body>
 </html>

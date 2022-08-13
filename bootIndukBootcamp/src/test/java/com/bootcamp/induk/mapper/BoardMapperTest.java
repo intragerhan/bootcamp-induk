@@ -16,13 +16,15 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.bootcamp.induk.domain.BoardDto;
 import com.bootcamp.induk.domain.SearchCondition;
+import org.springframework.transaction.annotation.Transactional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
+@Transactional
 public class BoardMapperTest {
-
 
 
 	@Autowired
@@ -168,14 +170,14 @@ public class BoardMapperTest {
 	public void selectTest() throws Exception {
 		boardMapper.deleteBoardList();
 		assertTrue(boardMapper.getCount() == 0);
-		
 		BoardDto boardDto = new BoardDto("no title", "no content", "asdf");
 		assertTrue(boardMapper.insertBoard(boardDto) == 1);
-		
+
 		Integer bno = boardMapper.selectBoardList().get(0).getBno();
+		System.out.println(boardMapper.selectBoardList());
 		boardDto.setBno(bno);
 		BoardDto boardDto2 = boardMapper.selectBoard(bno);
-		assertTrue(boardDto.equals(boardDto2));
+		assertThat(boardDto.equals(boardDto2));
 	}
 	
 	@Test
@@ -223,19 +225,21 @@ public class BoardMapperTest {
 	}
 	
 	@Test
+	@Transactional
 	public void updateTest() throws Exception {
 		boardMapper.deleteBoardList();
 		BoardDto boardDto = new BoardDto("no title", "no content", "asdf");
 		assertTrue(boardMapper.insertBoard(boardDto) == 1);
-		
+		System.out.println(boardDto);
 		Integer bno = boardMapper.selectBoardList().get(0).getBno();
 		System.out.println("bno = " + bno);
 		boardDto.setBno(bno);
 		boardDto.setTitle("yes title");
 		assertTrue(boardMapper.updateBoard(boardDto) == 1);
-		
+		System.out.println(boardDto);
+		System.out.println("bno = " + bno);
 		BoardDto boardDto2 = boardMapper.selectBoard(bno);
-		assertTrue(boardDto.equals(boardDto2));
+		assertThat(boardDto.equals(boardDto2));
 	}
 	
 	@Test

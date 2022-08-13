@@ -32,7 +32,7 @@ public class BoardController {
 	@GetMapping("/write")
 	public String write(Model m) {
 		m.addAttribute("mode", "new");
-		return "board/board";	// 읽기와 쓰기에 사용, 쓰기에 사용할 때는 mode == new
+		return "board/regBoard";	// 읽기와 쓰기에 사용, 쓰기에 사용할 때는 mode == new
 	}
 	
 	@PostMapping("/write")
@@ -52,21 +52,20 @@ public class BoardController {
 			m.addAttribute("boardDto", boardDto); // m.addAttribute(boardDto);
 			m.addAttribute("mode", "new");
 			m.addAttribute("msg", "write_err");
-			return "board/board";
+			return "board/regBoard";
 		}
 	}
 	
 	@GetMapping("/read")
-	public String read(Integer bno, Integer page, Integer pageSize, RedirectAttributes rattr, Model m) {
+	public String read(Integer bno, SearchCondition sc, RedirectAttributes rattr, Model m) {
 		try {
-			BoardDto boardDto = boardService.readBoard(bno);
-			m.addAttribute("board", boardDto);
-			m.addAttribute("page", page);
-			m.addAttribute("pageSize", pageSize);
+			int totalCnt = boardService.getSearchResultCnt(sc);
+			PageHandler pageHandler = new PageHandler(totalCnt, sc);
+			m.addAttribute("ph", pageHandler);
+
+			m.addAttribute("boardDto", boardService.readBoard(bno));
 		} catch (Exception e) {
 			e.printStackTrace();
-			rattr.addAttribute("page", page);
-			rattr.addAttribute("pageSize", pageSize);
 			rattr.addFlashAttribute("msg", "read_err");
 		}
 		
@@ -99,8 +98,9 @@ public class BoardController {
 	}
 	
 	@PostMapping("/modify")
-	public String modify(BoardDto boardDto, SearchCondition sc, Model m, HttpSession session, RedirectAttributes rattr) {
-		
+	public String modify(BoardDto boardDto, SearchCondition sc, Model m,
+						 HttpSession session, RedirectAttributes rattr) throws Exception {
+
 		String writer = (String) session.getAttribute("id");
 		boardDto.setWriter(writer);
 		
@@ -113,6 +113,11 @@ public class BoardController {
 			return "redirect:/board/list" + sc.getQueryString();
 		} catch (Exception e) {
 			e.printStackTrace();
+
+			int totalCnt = boardService.getSearchResultCnt(sc);
+			PageHandler pageHandler = new PageHandler(totalCnt, sc);
+			m.addAttribute("ph", pageHandler);
+
 			m.addAttribute(boardDto);
 			m.addAttribute("msg", "modify_err");
 			
