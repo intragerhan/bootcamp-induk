@@ -14,33 +14,33 @@
 	</select>
 	
 	<delete id="delete" parameterType="map">
-		DELETE FROM reply WHERE cno = #{cno} AND replier = #{replier}
+		DELETE FROM reply WHERE rno = #{rno} AND replier = #{replier}
 	</delete>
 	
 	<insert id="insert" parameterType="ReplyDto">
 		INSERT INTO reply
-			(bno, pcno, reply, replier, reg_date, up_date)
+			(bno, prno, reply, replier, reg_date, up_date)
 		VALUES
-			(#{bno}, #{pcno}, #{reply}, #{replier}, sysdate, sysdate)
+			(#{bno}, #{prno, jdbcType=INTEGER}, #{reply}, #{replier}, sysdate, sysdate)
 	</insert>
 	
 	<select id="selectAll" parameterType="Integer" resultType="ReplyDto">
-		SELECT cno, bno, coalesce(pcno, cno) as pcno, reply, replier, reg_date, up_date
+		SELECT rno, bno, coalesce(prno, rno) as prno, reply, replier, reg_date, up_date
 		FROM reply
 		WHERE bno = #{bno}
-		ORDER BY pcno asc, cno asc
+		ORDER BY prno asc, rno asc
 	</select>
 	
 	<select id="select" parameterType="int" resultType="ReplyDto">
-		SELECT cno, bno, pcno, reply, replier, reg_date, up_date
+		SELECT rno, bno, prno, reply, replier, reg_date, up_date
 		FROM reply
-		WHERE cno = #{cno}
+		WHERE rno = #{rno}
 	</select>
 	
 	<update id="update" parameterType="ReplyDto">
 		UPDATE reply
 		SET reply = #{reply}, up_date = sysdate
-		WHERE cno = #{cno} and replier = #{replier}
+		WHERE rno = #{rno} and replier = #{replier}
 	</update>
 	
 </mapper>

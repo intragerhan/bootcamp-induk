@@ -85,7 +85,7 @@ public class ReplyDaoImplTest {
 		assertTrue(replyDao.count(1) == 1);
 		
 		List<ReplyDto> list = replyDao.selectAll(1);
-		replyDto.setCno(list.get(0).getCno());
+		replyDto.setRno(list.get(0).getRno());
 		replyDto.setReply("reply2");
 		assertTrue(replyDao.update(replyDto) == 1);
 		

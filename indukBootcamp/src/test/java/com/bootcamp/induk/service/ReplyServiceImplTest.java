@@ -40,10 +40,10 @@ public class ReplyServiceImplTest {
 		assertTrue(replyService.write(replyDto) == 1);
 		assertTrue(boardDao.select(bno).getReply_cnt() == 1);
 		
-		Integer cno = replyDao.selectAll(bno).get(0).getCno();
+		Integer rno = replyDao.selectAll(bno).get(0).getRno();
 		
 		// 일부러 예외를 발생시키고 트랜잭션이 취소되는지 확인해야 함
-		int rowCnt = replyService.remove(cno, bno, replyDto.getReplier());
+		int rowCnt = replyService.remove(rno, bno, replyDto.getReplier());
 		assertTrue(rowCnt == 1);
 		assertTrue(boardDao.select(bno).getReply_cnt() == 0);
 	}
@@ -63,7 +63,7 @@ public class ReplyServiceImplTest {
 		assertTrue(boardDao.select(bno).getReply_cnt() == 0);
 		assertTrue(replyService.write(replyDto) == 1);
 		
-		Integer cno = replyDao.selectAll(bno).get(0).getCno();
+		Integer rno = replyDao.selectAll(bno).get(0).getRno();
 		assertTrue(boardDao.select(bno).getReply_cnt() == 1);
 	}
 }

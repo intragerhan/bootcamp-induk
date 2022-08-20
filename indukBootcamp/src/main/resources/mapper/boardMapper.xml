@@ -97,7 +97,7 @@
 		<include refid="searchCondition" />
 	</select>
 	
-	<update id="updateCommentCnt" parameterType="map">
+	<update id="updateReplyCnt" parameterType="map">
 		UPDATE board
 		set reply_cnt = reply_cnt + #{cnt}
 		where bno = #{bno}

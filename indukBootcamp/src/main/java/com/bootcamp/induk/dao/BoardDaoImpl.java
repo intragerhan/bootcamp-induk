@@ -79,10 +79,10 @@ public class BoardDaoImpl implements BoardDao {
 	}	// List<E> selectList(String statement, Object parameter)
 
 	@Override
-	public int updateCommentCnt(Integer bno, int cnt) {
+	public int updateReplyCnt(Integer bno, int cnt) {
 		Map map = new HashMap();
 		map.put("cnt", cnt);
 		map.put("bno", bno);
-		return session.update(namespace + "updateCommentCnt", map);
+		return session.update(namespace + "updateReplyCnt", map);
 	}
 }

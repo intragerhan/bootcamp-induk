@@ -10,14 +10,14 @@ public interface ReplyService {
 	int getCount(Integer bno) throws Exception;
 	
 	@Transactional(rollbackFor = Exception.class)
-	int remove(Integer cno, Integer bno, String commenter) throws Exception;
+	int remove(Integer rno, Integer bno, String replier) throws Exception;
 	
 	@Transactional(rollbackFor = Exception.class)
-	int write(ReplyDto commentDto) throws Exception;
+	int write(ReplyDto replyDto) throws Exception;
 
 	List<ReplyDto> getList(Integer bno) throws Exception;
 	
-	ReplyDto read(Integer cno) throws Exception;
+	ReplyDto read(Integer rno) throws Exception;
 	
-	int modify(ReplyDto commentDto) throws Exception;
+	int modify(ReplyDto replyDto) throws Exception;
 }

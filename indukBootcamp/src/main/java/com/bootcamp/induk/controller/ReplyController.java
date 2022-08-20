@@ -28,30 +28,8 @@ public class ReplyController {
 	@Autowired
 	ReplyService service;
 	
-	// 댓글을 수정하는 메서드
-//	@ResponseBody
-	@PatchMapping("/comments/{cno}")	// /ch4/comments/70 PATCH
-	public ResponseEntity<String> modify(@PathVariable Integer cno, @RequestBody ReplyDto dto) {
-		String replier = "asdf";
-		
-		dto.setReplier(replier);
-		dto.setCno(cno);
-		System.out.println("dto = " + dto);
-		
-		try {
-			if(service.modify(dto) != 1)
-				throw new Exception("Modify failed");
-			
-			return new ResponseEntity<>("Modify_success", HttpStatus.OK);
-		} catch(Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<String>("Modify_err", HttpStatus.BAD_REQUEST);
-		}
-	}
-	
 	// 댓글을 등록하는 메서드
-//	@ResponseBody
-	@PostMapping("/comments")	// /ch4/comments?bno=871	POST
+	@PostMapping("/replies")	// /induk/replies?bno=871	POST
 	public ResponseEntity<String> write(@RequestBody ReplyDto dto, Integer bno, HttpSession session) {
 //		String commenter = (String) session.getAttribute("id");
 		String replier = "asdf";
@@ -70,28 +48,8 @@ public class ReplyController {
 		}
 	}
 	
-	// 지정된 댓글을 삭제하는 메서드
-//	@ResponseBody
-	@DeleteMapping("/comments/{cno}")	// DELETE /comments/1?bno=871 <-- 삭제할 댓글 번호
-	public ResponseEntity<String> remove(@PathVariable Integer cno, Integer bno, HttpSession session) {
-//		String commenter = (String) session.getAttribute("id");
-		String replier = "asdf";
-		try {
-			int rowCnt = service.remove(cno, bno, replier);
-		
-			if(rowCnt != 1)
-				throw new Exception("Delete Failed");
-			
-			return new ResponseEntity<>("Delete_success", HttpStatus.OK);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<>("Delete_err", HttpStatus.BAD_REQUEST);
-		}
-	}
-	
 	// 지정된 게시물의 모든 댓글을 가져오는 메서드
-//	@ResponseBody 
-	@GetMapping("/comments")	// /comments?bno=874	GET
+	@GetMapping("/replies")	// /replies?bno=874	GET
 	public ResponseEntity<List<ReplyDto>> list(Integer bno) {
 		List<ReplyDto> list = null;
 		try {
@@ -104,4 +62,44 @@ public class ReplyController {
 		}
 		
 	}
+	
+	// 댓글을 수정하는 메서드
+	@PatchMapping("/replies/{rno}")	// /induk/replies/70 PATCH
+	public ResponseEntity<String> modify(@PathVariable Integer rno, @RequestBody ReplyDto dto) {
+		String replier = "asdf";
+		
+		dto.setReplier(replier);
+		dto.setRno(rno);
+		System.out.println("dto = " + dto);
+		
+		try {
+			if(service.modify(dto) != 1)
+				throw new Exception("Modify failed");
+			
+			return new ResponseEntity<>("Modify_success", HttpStatus.OK);
+		} catch(Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<String>("Modify_err", HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	// 지정된 댓글을 삭제하는 메서드
+	@DeleteMapping("/replies/{rno}")	// DELETE /replies/1?bno=871 <-- 삭제할 댓글 번호
+	public ResponseEntity<String> remove(@PathVariable Integer rno, Integer bno, HttpSession session) {
+//		String commenter = (String) session.getAttribute("id");
+		String replier = "asdf";
+		try {
+			int rowCnt = service.remove(rno, bno, replier);
+		
+			if(rowCnt != 1)
+				throw new Exception("Delete Failed");
+			
+			return new ResponseEntity<>("Delete_success", HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>("Delete_err", HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+
 }

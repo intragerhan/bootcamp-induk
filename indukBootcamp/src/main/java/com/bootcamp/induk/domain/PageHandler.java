@@ -1,6 +1,5 @@
 package com.bootcamp.induk.domain;
 
-import org.checkerframework.checker.units.qual.s;
 import org.springframework.web.util.UriComponentsBuilder;
 
 public class PageHandler {

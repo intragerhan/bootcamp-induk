@@ -15,50 +15,50 @@ public class ReplyServiceImpl implements ReplyService {
 	@Autowired
 	BoardDao boardDao;
 	@Autowired
-	ReplyDao commentDao;
+	ReplyDao replyDao;
 
-//	public CommentServiceImpl(CommentDao commentDao, BoardDao boardDao) {
-//		this.commentDao = commentDao;
+//	public replyServiceImpl(replyDao replyDao, BoardDao boardDao) {
+//		this.replyDao = replyDao;
 //		this.boardDao = boardDao;
 //	}
 	
 	@Override
 	public int getCount(Integer bno) throws Exception {
-		return commentDao.count(bno);
+		return replyDao.count(bno);
 	}
 	
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public int remove(Integer cno, Integer bno, String commenter) throws Exception {
-		int rowCnt = boardDao.updateCommentCnt(bno, -1);
-		System.out.println("updateCommentCnt - rowCnt = " + rowCnt);
+	public int remove(Integer rno, Integer bno, String replier) throws Exception {
+		int rowCnt = boardDao.updateReplyCnt(bno, -1);
+		System.out.println("updatereplyCnt - rowCnt = " + rowCnt);
 //		throw new Exception("test");
-		rowCnt = commentDao.delete(cno, commenter);
+		rowCnt = replyDao.delete(rno, replier);
 		System.out.println("rowCnt = " + rowCnt);
 		return rowCnt;
 	}
 	
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public int write(ReplyDto commentDto) throws Exception {
-		boardDao.updateCommentCnt(commentDto.getBno(), 1);
+	public int write(ReplyDto replyDto) throws Exception {
+		boardDao.updateReplyCnt(replyDto.getBno(), 1);
 //			throw new Exception("test");
-		return commentDao.insert(commentDto);
+		return replyDao.insert(replyDto);
 	}
 	
 	@Override
 	public List<ReplyDto> getList(Integer bno) throws Exception {
 //		throw new Exception("test");
-		return commentDao.selectAll(bno);
+		return replyDao.selectAll(bno);
 	}
 	
 	@Override
-	public ReplyDto read(Integer cno) throws Exception {
-		return commentDao.select(cno);
+	public ReplyDto read(Integer rno) throws Exception {
+		return replyDao.select(rno);
 	}
 	
 	@Override
-	public int modify(ReplyDto commentDto) throws Exception {
-		return commentDao.update(commentDto);
+	public int modify(ReplyDto replyDto) throws Exception {
+		return replyDao.update(replyDto);
 	}
 }

@@ -28,9 +28,9 @@ public class ReplyDaoImpl implements ReplyDao {
 	}	// int delete(String statement)
 	
 	@Override
-	public int delete(Integer cno, String replier) throws Exception {
+	public int delete(Integer rno, String replier) throws Exception {
 		Map map = new HashMap();
-		map.put("cno", cno);
+		map.put("rno", rno);
 		map.put("replier", replier);
 		return session.delete(namespace + "delete", map);
 	}	// int delete(String statement, Object parameter)
@@ -46,8 +46,8 @@ public class ReplyDaoImpl implements ReplyDao {
 	}	// List<E> selectList(String statement)
 	
 	@Override
-	public ReplyDto select(Integer cno) throws Exception {
-		return session.selectOne(namespace + "select", cno);
+	public ReplyDto select(Integer rno) throws Exception {
+		return session.selectOne(namespace + "select", rno);
 	}	// T selectOne(String statement, Object parameter)
 	
 	@Override

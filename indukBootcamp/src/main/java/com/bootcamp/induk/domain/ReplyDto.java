@@ -4,26 +4,26 @@ import java.util.Date;
 import java.util.Objects;
 
 public class ReplyDto {
-	private Integer cno;
+	private Integer rno;
 	private Integer bno;
-	private Integer pcno;
+	private Integer prno;
 	private String reply;
 	private String replier;
 	private Date reg_date;
 	private Date up_date;
 	
 	public ReplyDto() {}
-	public ReplyDto(Integer bno, Integer pcno, String reply, String replier) {
+	public ReplyDto(Integer bno, Integer prno, String reply, String replier) {
 		super();
 		this.bno = bno;
-		this.pcno = pcno;
+		this.prno = prno;
 		this.reply = reply;
 		this.replier = replier;
 	}
 	
 	@Override
 	public int hashCode() {
-		return Objects.hash(bno, cno, reply, replier, pcno);
+		return Objects.hash(rno, bno, prno, reply, replier);
 	}
 	
 	@Override
@@ -31,9 +31,9 @@ public class ReplyDto {
 		if (this == obj) return true;
 		if (obj == null || getClass() != obj.getClass()) return false;
 		ReplyDto other = (ReplyDto) obj;
-		return Objects.equals(cno, other.cno) 
+		return Objects.equals(rno, other.rno) 
 				&& Objects.equals(bno, other.bno)
-				&& Objects.equals(pcno, other.pcno)
+				&& Objects.equals(prno, other.prno)
 				&& Objects.equals(reply, other.reply)
 				&& Objects.equals(replier, other.replier);
 	}
@@ -41,9 +41,9 @@ public class ReplyDto {
 	@Override
 	public String toString() {
 		return "ReplyDto [" +
-				"cno=" + cno +
+				"rno=" + rno +
 				", bno=" + bno +
-				", pcno=" + pcno + 
+				", prno=" + prno + 
 				", reply=" + reply + 
 				", replier=" + replier +
 				", reg_date=" + reg_date +
@@ -51,11 +51,11 @@ public class ReplyDto {
 				']';
 	}
 	
-	public Integer getCno() {
-		return cno;
+	public Integer getRno() {
+		return rno;
 	}
-	public void setCno(Integer cno) {
-		this.cno = cno;
+	public void setRno(Integer rno) {
+		this.rno = rno;
 	}
 	public Integer getBno() {
 		return bno;
@@ -63,11 +63,11 @@ public class ReplyDto {
 	public void setBno(Integer bno) {
 		this.bno = bno;
 	}
-	public Integer getPcno() {
-		return pcno;
+	public Integer getPrno() {
+		return prno;
 	}
-	public void setPcno(Integer pcno) {
-		this.pcno = pcno;
+	public void setPrno(Integer prno) {
+		this.prno = prno;
 	}
 	public String getReply() {
 		return reply;

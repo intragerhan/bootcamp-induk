@@ -36,6 +36,18 @@ public class SearchCondition {
 				.build().toString();
 	}
 	
+	public String getReplyQueryString() {
+		return getReplyQueryString(page);
+	}
+	
+	public String getReplyQueryString(Integer page) {
+		// ?page=1&pageSize=10&option=T&keyword="title"
+		return UriComponentsBuilder.newInstance()
+				.queryParam("page", page)
+				.queryParam("pageSize", pageSize)
+				.build().toString();
+	}
+	
 	public String getQueryString() {
 		return getQueryString(page);
 	}
