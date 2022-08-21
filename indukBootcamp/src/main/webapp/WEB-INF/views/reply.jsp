@@ -253,7 +253,7 @@
 			</div>
 			<div id="reply-writebox-bottom">
 				<div class="register-box">
-					<a href="#" class="btn" id="btn-write-reply">등록</a>
+					<a href="replies" class="btn" id="btn-write-reply">등록</a>
 				</div>
 			</div>
 		</div>
@@ -295,11 +295,11 @@
 	let id = 'asdf';
 	let bno = 2087;
 
-	let addZero = function(value=1){
+	let addZero = function(value = 1){
 		return value > 9 ? value : "0" + value;
 	}
 
-	let dateToString = function(ms=0) {
+	let dateToString = function(ms = 0) {
 		let date = new Date(ms);
 
 		let yyyy = date.getFullYear();
@@ -356,7 +356,7 @@
 	$(document).ready(function(){
 
 		/* POST(Create) */
-		$("a.btn-write-reply").click(function(e) {
+		$("#btn-write-reply").click(function(e) {
 			let reply = $("textarea[id=reply]").val();
 
 			if(reply.trim() == '') {
@@ -375,7 +375,9 @@
 					showList(bno);
 				},
 				error : function() { alert("Write error"); }
-			})
+			});
+
+
 		});
 
 		/* GET 대댓글 */
@@ -392,7 +394,7 @@
 		});
 
 		/* 대댓 등록 */
-		$("a.btn-write-nestedReply").click(function() {
+		$("#btn-write-nestedReply").click(function() {
 			let reply = $("textarea[id=nestedReply]").val();
 			let prno = $("#nestedReply-writebox").attr("data-prno");
 
@@ -421,7 +423,7 @@
 		});
 
 		/* Delete reply */
-		$("a.btn-delete").click(function(e){
+		$("#btn-delete").click(function(e){
 			let rno = $(this).attr("data-rno");
 			let bno = $(this).attr("data-bno");
 			$.ajax({
@@ -455,7 +457,7 @@
 			$("#modalWin").css("display","block");
 		});
 
-		$("a.btn-write-modify").click(function(){
+		$("#btn-write-modify").click(function(){
 			// 1. 변경된 내용을 서버로 전송
 			let rno = $(this).attr("data-rno");
 			let reply = $("textarea[id=modReply]").val();
