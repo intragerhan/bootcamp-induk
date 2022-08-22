@@ -6,21 +6,21 @@
 
 	<insert id="insertReply" parameterType="com.bootcamp.induk.domain.ReplyDto">
 		INSERT INTO reply
-			(bno, pcno, reply, replier, reg_date, up_date)
+			(bno, prno, reply, replier, reg_date, up_date)
 		VALUES
-			(#{bno}, #{pcno}, #{reply}, #{replier}, sysdate, sysdate)
+			(#{bno}, #{prno, jdbcType=INTEGER}, #{reply}, #{replier}, sysdate, sysdate)
 	</insert>
 
 	<select id="selectReplyList" parameterType="Integer" resultType="com.bootcamp.induk.domain.ReplyDto">
-		SELECT rno, bno, coalesce(pcno, rno) as pcno, reply, replier, reg_date, up_date
+		SELECT rno, bno, coalesce(prno, rno) as prno, reply, replier, reg_date, up_date
 		FROM reply
 		WHERE
 		      bno = #{bno}
-		ORDER BY pcno asc, rno asc
+		ORDER BY prno asc, rno asc
 	</select>
 
 	<select id="selectReply" parameterType="Integer" resultType="com.bootcamp.induk.domain.ReplyDto">
-		SELECT rno, bno, pcno, reply, replier, reg_date, up_date
+		SELECT rno, bno, prno, reply, replier, reg_date, up_date
 		FROM reply
 		WHERE
 		      rno = #{rno}

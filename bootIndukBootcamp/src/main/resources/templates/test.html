@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <html>
 <head>
     <title>Title</title>
@@ -16,19 +16,40 @@
     </div>
     
     <script>
-    	let bno = 2087;
+    	let bno = 291;
     
     	let showList = function(bno) {
     		$.ajax({
     			type: 'GET',	// 요청 메서드
-    			url: '/induk/replies?bno=' + bno,	// 요청 URI
+    			url: '/replies?bno=' + bno,	// 요청 URI
     			success: function(result) {
     				$("#replyList").html(toHTML(result)); // person2 = JSON.parse(result);	// 서버로부터 응답이 도착하면 호출될 함수
   	 			},
     			error: function() { alert("error") }	// 에러가 발생했을 때 호출될 함수
     		});	// $.ajax()
     	}
-            
+
+        let toHTML = function(replies) {
+            let tmp = "<ul>";
+
+            replies.forEach(function(reply) {
+                tmp += '<li data-rno=' + reply.rno
+                tmp += ' data-prno=' + reply.prno
+                tmp += ' data-bno=' + reply.bno + '>'
+                if(reply.rno != reply.prno)
+                    tmp += 'ㄴ'
+                tmp += ' replier=<span class="replier">' + reply.replier + '</span>'
+                tmp += ' reply=<span class="reply">' + reply.reply + '</span>'
+                tmp += ' up_date=' + reply.up_date
+                tmp += '<button class="delBtn">삭제</button>'
+                tmp += '<button class="modBtn">수정</button>'
+                tmp += '<button class="nestedReplyBtn">답글</button>'
+                tmp += '</li>'
+            })
+
+            return tmp + "</ul>";
+        }
+
         $(document).ready(function(){
         	showList(bno);
         	
@@ -44,7 +65,7 @@
         		
         		$.ajax({
         			type: 'POST',		// 요청 메서드
-        			url: '/induk/replies?bno=' + bno	,	// 요청 URI	// /induk/replies?bno=893	POST
+        			url: '/replies?bno=' + bno	,	// 요청 URI	// /induk/replies?bno=893	POST
         			headers: { "content-type" : "application/json"},	// 요청 헤더
         			data: JSON.stringify({prno:prno, bno:bno, reply:reply}),	// 서버로 전송할 데이터, stringify로 직렬화 필요
         			success: function(result) {
@@ -71,7 +92,7 @@
             
             	$.ajax({
            			type: 'POST',	// 요청 메서드
-           			url: '/induk/replies?bno=' + bno,	// 요청 URI	// /induk/replies?bno=893 POST
+           			url: '/replies?bno=' + bno,	// 요청 URI	// /induk/replies?bno=893 POST
            			headers: { "content-type" : "application/json" },	// 요청 헤더
            			data: JSON.stringify({bno: bno, reply: reply}),	// 서버로 전송할 데이터, stringify()로 직렬화 필요
            			success: function(result) {
@@ -94,7 +115,7 @@
             	
             	$.ajax({
             		type: 'PATCH',		// 요청 메서드
-            		url: '/induk/replies/' + rno,	// 요청 URI 	// /induk/replies/70	PATCH
+            		url: '/replies/' + rno,	// 요청 URI 	// /induk/replies/70	PATCH
             		headers: { "content-type" : "application/json"},	// 요청 헤더
             		data: JSON.stringify({rno:rno, reply:reply}),	// 서버로 전송할 데이터, stringify()로 직렬화 필요
             		success: function(result) {
@@ -129,7 +150,7 @@
             	let bno = $(this).parent().attr("data-bno");
            		$.ajax({
             		type: 'DELETE',		// 요청 메서드
-            		url: '/induk/replies/' + rno + '?bno=' + bno,	// 요청 URI
+            		url: '/replies/' + rno + '?bno=' + bno,	// 요청 URI
             		success: function(result) {
             			alert(result)
             			showList(bno);
@@ -138,27 +159,7 @@
             	})	// $.ajax()
             })
         });
-        
-        let toHTML = function(replies) {
-        	let tmp = "<ul>";
-        	
-        	replies.forEach(function(reply) {
-        		tmp += '<li data-rno=' + reply.rno
-        		tmp += ' data-prno=' + reply.prno
-        		tmp += ' data-bno=' + reply.bno + '>'
-        		if(reply.rno != reply.prno)
-        			tmp += 'ㄴ'
-        		tmp += ' replier=<span class="replier">' + reply.replier + '</span>'
-        		tmp += ' reply=<span class="reply">' + reply.reply + '</span>'
-        		tmp += ' up_date=' + reply.up_date
-        		tmp += '<button class="delBtn">삭제</button>'
-        		tmp += '<button class="modBtn">수정</button>'
-        		tmp += '<button class="nestedReplyBtn">답글</button>'
-        		tmp += '</li>'
-        	})
-        	
-        	return tmp + "</ul>";
-        }
+
     </script>
 </body>
 </html>

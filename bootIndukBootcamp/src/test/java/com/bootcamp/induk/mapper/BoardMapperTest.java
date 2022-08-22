@@ -26,7 +26,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Transactional
 public class BoardMapperTest {
 
-
 	@Autowired
 	private BoardMapper boardMapper;
 	

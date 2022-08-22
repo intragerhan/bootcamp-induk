@@ -67,13 +67,11 @@
 	</delete>
 
 	<update id="updateCommentCnt" parameterType="map">
-		<![CDATA[
 			UPDATE board
 			set
 			    reply_cnt = reply_cnt + #{cnt}
 			where
 			      bno = #{bno}
-	  	]]>
 	</update>
 
 	<select id="getCount" resultType="int">
