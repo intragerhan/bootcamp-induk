@@ -5,13 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mybatis.spring.boot.test.autoconfigure.AutoConfigureMybatis;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringBootConfiguration;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.bootcamp.induk.domain.BoardDto;
@@ -23,12 +22,69 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-@Transactional
+@AutoConfigureMybatis
 public class BoardMapperTest {
 
 	@Autowired
 	private BoardMapper boardMapper;
-	
+
+	@DisplayName("게시글 등록")
+	@Test
+	public void insert() throws Exception {
+		//given
+		BoardDto boardDto = new BoardDto("title", "qwerasdf", "asdf");
+		//when
+		int result = boardMapper.insertBoard(boardDto);
+		//then
+		assertThat(result).isEqualTo(1);
+	}
+
+	@DisplayName("게시글 조회")
+	@Test
+	public void select() throws Exception {
+		//given
+		int bno = 1;
+		//when
+		BoardDto boardDto = boardMapper.selectBoard(bno);
+		//then
+		assertThat(boardDto.getBno()).isEqualTo(1);
+	}
+
+	@DisplayName("게시글 수정")
+	@Test
+	public void update() throws Exception {
+		//given
+		BoardDto boardDto = boardMapper.selectBoard(1);
+		//when
+	}
+
+
+	@DisplayName("더미 게시글 삽입")
+	@Test
+	public void insertDummyAndSelectAll() throws Exception {
+		for(int i = 1; i <= 20; i++) {
+			//given
+			BoardDto boardDto = new BoardDto("title" + i, "qwertest" + i, "asdf" + i);
+			//then
+			boardMapper.insertBoard(boardDto);
+		}
+		//then
+		assertTrue(boardMapper.getCount() >= 20);
+	}
+
+	@DisplayName("전체 게시글 삭제")
+	@Test
+	public void deleteAll() throws Exception {
+		//given & when
+		boardMapper.deleteBoardList();
+		//then
+		assertThat(boardMapper.getCount()).isEqualTo(0);
+	}
+
+
+
+
+
 	@Test
 	public void searchSelectPageTest() throws Exception {
 		boardMapper.deleteBoardList();
@@ -63,15 +119,6 @@ public class BoardMapperTest {
 		sc = new SearchCondition(1, 10, "asdf2", "W");
 		cnt = boardMapper.searchResultCnt(sc);
 		assertTrue(cnt == 2);
-	}
-	
-	@Test
-	public void insertTestData() throws Exception {
-		boardMapper.deleteBoardList();
-		for(int i = 1; i <= 200; i++) {
-			BoardDto boardDto = new BoardDto("title" + i, "no content" + i, "asdf");
-			boardMapper.insertBoard(boardDto);
-		}
 	}
 	
 	@Test

@@ -33,7 +33,7 @@ public class ReplyServiceImplTest {
 	@Test
 	public void insert() throws Exception {
 		// given
-		ReplyDto replyDto = new ReplyDto(287, 0, "hello", "asdf");
+		ReplyDto replyDto = new ReplyDto(355, 0, "hello", "asdf");
 		// when
 		int result = replyService.writeReply(replyDto);
 		// then
@@ -50,8 +50,6 @@ public class ReplyServiceImplTest {
 		// then
 		assertThat(replyDto.getRno()).isEqualTo(5);
 	}
-
-
 
 	@Test
 	public void remove() throws Exception {

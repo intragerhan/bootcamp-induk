@@ -8,12 +8,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import com.bootcamp.induk.domain.ReplyDto;
 import com.bootcamp.induk.service.interfaces.ReplyService;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
 public class ReplyController {
 
@@ -41,17 +42,20 @@ public class ReplyController {
 	
 	// 댓글을 등록하는 메서드
 	@PostMapping("/replies")	// /ch4/replies?bno=871	POST
-	public ResponseEntity<String> write(@RequestBody ReplyDto dto, Integer bno, HttpSession session) {
+	public ResponseEntity<String> write(@RequestBody ReplyDto dto, Integer bno, HttpSession session, Model m) {
 //		String commenter = (String) session.getAttribute("id");
 		String replier = "asdf";
 		dto.setReplier(replier);
 		dto.setBno(bno);
-		System.out.println("dto = " + dto);
-		
+
 		try {
 			if(replyService.writeReply(dto) != 1)
 				throw new Exception("Write failed");
-			
+
+			List<ReplyDto> list = null;
+			list = replyService.readReplyList(bno);
+			m.addAttribute("list", list);
+
 			return new ResponseEntity<>("Write_success", HttpStatus.OK);
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -79,15 +83,15 @@ public class ReplyController {
 	
 	// 지정된 게시물의 모든 댓글을 가져오는 메서드
 	@GetMapping("/replies")	// /replies?bno=874	GET
-	public ResponseEntity<List<ReplyDto>> list(Integer bno) {
+	public ResponseEntity<List<ReplyDto>> list(Integer bno, Model m) {
 		List<ReplyDto> list = null;
 		try {
 			list = replyService.readReplyList(bno);
-			System.out.println("list = " + list);
-			return new ResponseEntity<>(list, HttpStatus.OK);	// 200
+//			m.addAttribute("list", list);
+			return new ResponseEntity<List<ReplyDto>>(list, HttpStatus.OK);	// 200
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);	// 400
+			return new ResponseEntity<List<ReplyDto>>(HttpStatus.BAD_REQUEST);	// 400
 		}
 	}
 }

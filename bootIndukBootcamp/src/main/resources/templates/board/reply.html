@@ -221,7 +221,29 @@
 </head>
 <body>
 <div id="replyForm">
-    <div id="replyList"></div>
+    <div id="replyList" th:fragment="replyList">
+        <ul>
+            <th:block th:each="comment : ${list}">
+                <li class="reply-item" th:attr="data-rno=${comment.rno},data-bno=${comment.bno}">
+                    <th:block th:if="${comment.rno != comment.prno}" th:text="ㄴ"></th:block>
+                    <span class="reply-img"><i class="fa fa-user-circle" aria-hidden="true"></i></span>
+                    <div class="reply-area">
+                        <div class="replier">[[${comment.replier}]]</div>
+                        <div class="reply-content">[[${comment.reply}]]</div>
+                        <div class="reply-bottom">
+                            <span class="up_date">[[${comment.up_date}]]</span>
+                            <a href="#" class="btn-write" th:attr="data-rno=${comment.rno},
+                            data-bno=${comment.bno},data-prno=${comment.prno}">답글쓰기</a>
+                            <a href="#" class="btn-modify" th:attr="data-rno=${comment.rno},
+                            data-bno=${comment.bno},data-prno=${comment.prno}">수정</a>
+                            <a href="#" class="btn-delete" th:attr="data-rno=${comment.rno},
+                            data-bno=${comment.bno},data-prno=${comment.prno}">삭제</a>
+                        </div>
+                    </div>
+                </li>
+            </th:block>
+        </ul>
+    </div>
     <div class="paging-container">
         <div class="paging">
             <a class="page" href="#">&lt;</a>
@@ -240,7 +262,7 @@
     </div>
     <!-- 댓글 -->
     <div id="reply-writebox">
-        <div class="replier replier-writebox">${id}</div>
+        <div class="replier replier-writebox">asdf</div>
         <div class="reply-writebox-content">
             <textarea name="reply" id="reply" cols="30" rows="5" placeholder="댓글을 남겨보세요"></textarea>
         </div>
@@ -249,10 +271,11 @@
                 <a href="replies" class="btn" id="btn-write-reply">등록</a>
             </div>
         </div>
-    </div>
+    </div><!-- 댓글 끝 -->
 </div>
+<!-- 대댓글 -->
 <div id="nestedReply-writebox">
-    <div class="replier replier-writebox">${id}</div>
+    <div class="replier replier-writebox">asdf</div>
     <div class="nestedReply-writebox-content">
         <textarea name="reply" id="nestedReply" cols="30" rows="3" placeholder="답글을 남겨보세요"></textarea>
     </div>
@@ -262,7 +285,8 @@
             <a href="#" class="btn" id="btn-cancel-nestedReply">취소</a>
         </div>
     </div>
-</div>
+</div><!-- 대댓글 끝 -->
+
 <div id="modalWin" class="modal">
     <!-- Modal content -->
     <div class="modal-content">
@@ -270,7 +294,7 @@
         <p>
         <h2> | 댓글 수정</h2>
         <div id="modify-writebox">
-            <div class="replier replier-writebox">${id}</div>
+            <div class="replier replier-writebox">asdf</div>
             <div class="modify-writebox-content">
                 <textarea name="reply" id="modReply" cols="30" rows="5" placeholder="댓글을 남겨보세요"></textarea>
             </div>
@@ -285,8 +309,7 @@
 </div>
 <script>
 
-    let id = 'asdf';
-    let bno = 1;
+    let bno = 355;
 
     let addZero = function(value = 1){
         return value > 9 ? value : "0" + value;
@@ -303,17 +326,34 @@
         let MM = addZero(date.getMinutes());
         let ss = addZero(date.getSeconds());
 
-        return yyyy+"."+mm+"."+dd+ " " + HH + ":" + MM + ":" + ss;
+        return yyyy + "." + mm + "." + dd + " " + HH + ":" + MM + ":" + ss;
+    }
+
+    /**
+     * d
+     */
+    function printReplyList(bno) {
+        $.ajax({
+            type: "GET",
+            url: "/replies?bno=" + bno,
+            success: function (result) {
+                $("#replyList").html(toHTML(result));
+            },
+            error: function() { alert('print error') }
+        });
     }
 
     let showList = function(bno) {
         $.ajax({
             type: 'GET',	// 요청 메서드
-            url: '/induk/replies?bno=' + bno,	// 요청 URI
+            url: '/replies?bno=' + bno,	// 요청 URI
             success: function(result) {
-                $("#replyList").html(toHTML(result)); // 서버로부터 응답이 도착하면 호출될 함수
+                alert("댓글창");
+                // $("#replyList").html(toHTML(result)); // 서버로부터 응답이 도착하면 호출될 함수
             },
             error: function() { alert("error") } // 에러가 발생했을 때 호출될 함수
+        }).done(function (fragment) {
+            $("#replyList").replaceWith.html(toHTML(fragment));
         });	// $.ajax()
     }
 
@@ -347,6 +387,7 @@
     }
 
     $(document).ready(function(){
+        printReplyList(bno);
 
         /* POST(Create) */
         $("#btn-write-reply").click(function(e) {
@@ -360,17 +401,18 @@
 
             $.ajax({
                 type: 'POST',	// 요청 메서드
-                url: '/induk/replies?bno=' + bno,	// 요청 URI	// /induk/replies?bno=893 POST
+                url: '/replies?bno=' + bno,	// 요청 URI	// /induk/replies?bno=893 POST
                 headers: { "content-type" : "application/json" },	// 요청 헤더
                 data: JSON.stringify({bno: bno, reply: reply}),	// 서버로 전송할 데이터, stringify()로 직렬화 필요
                 success: function(result) {
                     alert(result);
-                    showList(bno);
+                    printReplyList(bno);
                 },
                 error : function() { alert("Write error"); }
-            });
-
-
+            })
+            //         .done(function (fragment) {
+            //     $("#replyList").replaceWith(printReplyList(bno));
+            // });
         });
 
         /* GET 대댓글 */
@@ -399,7 +441,7 @@
 
             $.ajax({
                 type: 'POST',		// 요청 메서드
-                url: '/induk/replies?bno=' + bno	,	// 요청 URI	// /induk/replies?bno=893	POST
+                url: '/replies?bno=' + bno	,	// 요청 URI	// /induk/replies?bno=893	POST
                 headers: { "content-type" : "application/json"},	// 요청 헤더
                 data: JSON.stringify({prno:prno, bno:bno, reply:reply}),	// 서버로 전송할 데이터, stringify로 직렬화 필요
                 success: function(result) {
@@ -421,7 +463,7 @@
             let bno = $(this).attr("data-bno");
             $.ajax({
                 type: 'DELETE',		// 요청 메서드
-                url: '/induk/replies/' + rno + '?bno=' + bno,	// 요청 URI
+                url: '/replies/' + rno + '?bno=' + bno,	// 요청 URI
                 success: function(result) {
                     alert(result)
                     showList(bno);
@@ -463,7 +505,7 @@
 
             $.ajax({
                 type: 'PATCH',		// 요청 메서드
-                url: '/induk/replies/' + rno,	// 요청 URI 	// /induk/replies/70	PATCH
+                url: '/replies/' + rno,	// 요청 URI 	// /induk/replies/70	PATCH
                 headers: { "content-type" : "application/json"},	// 요청 헤더
                 data: JSON.stringify({rno:rno, reply:reply}),	// 서버로 전송할 데이터, stringify()로 직렬화 필요
                 success: function(result) {
