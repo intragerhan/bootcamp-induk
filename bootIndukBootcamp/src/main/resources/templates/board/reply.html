@@ -242,15 +242,16 @@
     <div id="reply-writebox">
         <div class="replier replier-writebox">asdf</div>
         <div class="reply-writebox-content">
-            <textarea name="reply" id="reply" cols="30" rows="5" placeholder="댓글을 남겨보세요"></textarea>
+            <textarea name="postReply" id="postReply" cols="30" rows="5" placeholder="댓글을 남겨보세요"></textarea>
         </div>
         <div id="reply-writebox-bottom">
             <div class="register-box">
-                <a href="replies" class="btn" id="btn-write-reply">등록</a>
+                <a href="#" class="btn" id="btn-write-reply">등록</a>
             </div>
         </div>
     </div><!-- 댓글 끝 -->
 </div>
+
 <!-- 대댓글 -->
 <div id="nestedReply-writebox">
     <div class="replier replier-writebox">asdf</div>
@@ -265,6 +266,7 @@
     </div>
 </div><!-- 대댓글 끝 -->
 
+<!-- 댓글 수정 -->
 <div id="modalWin" class="modal">
     <!-- Modal content -->
     <div class="modal-content">
@@ -274,7 +276,7 @@
         <div id="modify-writebox">
             <div class="replier replier-writebox">asdf</div>
             <div class="modify-writebox-content">
-                <textarea name="reply" id="modReply" cols="30" rows="5" placeholder="댓글을 남겨보세요"></textarea>
+                <textarea name="modReply" id="modReply" cols="30" rows="5" placeholder="댓글을 남겨보세요"></textarea>
             </div>
             <div id="modify-writebox-bottom">
                 <div class="register-box">
@@ -288,171 +290,6 @@
 <script>
 
     let bno = 355;
-
-    $(document).ready(function(){
-        showReplyList(bno);
-
-        /** 댓글 등록
-         *
-         */
-        $("#btn-write-reply").click(function(e) {
-            let reply = $('textarea.reply').attr('id');
-
-            if(reply.trim() == '') {
-                alert("댓글을 입력해주세요.");
-                $('textarea.reply').attr('id').focus();
-                return;
-            }
-
-            $.ajax({
-                type: 'POST',	// 요청 메서드
-                url: '/replies?bno=' + bno,	// 요청 URI	// /replies?bno=893 POST
-                headers: { "content-type" : "application/json" },	// 요청 헤더
-                data: JSON.stringify({bno: bno, reply: reply}),	// 서버로 전송할 데이터, stringify()로 직렬화 필요
-                success: function(result) {
-                    alert(result);
-                    showReplyList(bno);
-                },
-                error : function() { alert("Write error"); }
-            }).done(function (result) {
-                alert(result);
-                showReplyList(bno);
-            }).fail(function (error) {
-                alert(error);
-            })
-        });
-
-        /* GET 대댓글 */
-        $("a.btn-write").click(function(e){
-            let target = e.target;
-            let rno = target.getAttribute("data-rno")
-            let bno = target.getAttribute("data-bno")
-
-            let repForm = $("#nestedReply-writebox");
-            repForm.appendTo($("li[data-rno="+rno+"]"));
-            repForm.css("display", "block");
-            repForm.attr("data-prno", prno);
-            repForm.attr("data-bno",  bno);
-        });
-
-        /* 대댓 등록 */
-        $("#btn-write-nestedReply").click(function() {
-            let reply = $("textarea[id=nestedReply]").val();
-            let prno = $("#nestedReply-writebox").attr("data-prno");
-
-            if(reply.trim() == '') {
-                alert("댓글을 입력해주세요");
-                $("textarea[id=nestedReply]").focus()
-                return;
-            }
-
-            $.ajax({
-                type: 'POST',		// 요청 메서드
-                url: '/replies?bno=' + bno	,	// 요청 URI	// /induk/replies?bno=893	POST
-                headers: { "content-type" : "application/json"},	// 요청 헤더
-                data: JSON.stringify({prno:prno, bno:bno, reply:reply}),	// 서버로 전송할 데이터, stringify로 직렬화 필요
-                success: function(result) {
-                    alert(result);
-                    showReplyList(bno);
-                },
-                error: function() { alert("error") }	// 에러가 발생했을 때, 호출될 함수
-            });	// $.ajax()
-        });
-
-        /* 대댓 취소 */
-        $("#btn-cancel-nestedReply").click(function(e){
-            $("#nestedReply-writebox").css("display", "none");
-        });
-
-        /* Delete reply */
-        $("#btn-delete").click(function(e){
-            let rno = $(this).attr("data-rno");
-            let bno = $(this).attr("data-bno");
-            $.ajax({
-                type: 'DELETE',		// 요청 메서드
-                url: '/replies/' + rno + '?bno=' + bno,	// 요청 URI
-                success: function(result) {
-                    alert(result)
-                    showReplyList(bno);
-                    $("#replyList").html(toHTML(result));
-                },
-                error: function() {alert("error")}	// 에러가 발생했을 때, 호출될 함수
-            })	// $.ajax()
-        });
-
-        /* modal */
-        $("a.btn-modify").click(function(e){
-            let target = e.target;
-            let rno = target.getAttribute("data-rno");
-            let bno = target.getAttribute("data-bno");
-            let prno = target.getAttribute("data-prno");
-            let li = $("li[data-rno="+rno+"]");
-            let replier = $(".replier", li).first().text();
-            let reply = $(".reply-content", li).first().text();
-
-            $("#modalWin .replier").text(replier);
-            $("#modalWin textarea").text(reply);
-            $("#btn-write-modify").attr("data-rno", rno);
-            $("#btn-write-modify").attr("data-prno", prno);
-            $("#btn-write-modify").attr("data-bno", bno);
-
-            // 팝업창을 열고 내용을 보여준다.
-            $("#modalWin").css("display","block");
-        });
-
-        $("#btn-write-modify").click(function(){
-            // 1. 변경된 내용을 서버로 전송
-            let rno = $(this).attr("data-rno");
-            let reply = $("textarea[id=modReply]").val();
-
-            if(reply.trim() == '') {
-                alert("댓글을 입력해주세요");
-                $("textarea[id=modReply]").focus()
-                return;
-            }
-
-            $.ajax({
-                type: 'PATCH',		// 요청 메서드
-                url: '/replies/' + rno,	// 요청 URI 	// /induk/replies/70	PATCH
-                headers: { "content-type" : "application/json"},	// 요청 헤더
-                data: JSON.stringify({rno:rno, reply:reply}),	// 서버로 전송할 데이터, stringify()로 직렬화 필요
-                success: function(result) {
-                    alert(result);
-                },
-                error: function() { alert("error") }	// 에러가 발생했을 때, 호출될 함수
-            });	// $.ajax()
-
-            // 2. 모달 창을 닫는다.
-            $(".close").trigger("click");
-            showReplyList(bno);
-        });
-
-
-        $(".close").click(function(){
-            $("#modalWin").css("display","none");
-        });
-
-    });
-
-    //---------------------------------------------Utils-------------------------------------------------//
-
-    let addZero = function(value = 1){
-        return value > 9 ? value : "0" + value;
-    }
-
-    let dateToString = function(ms = 0) {
-        let date = new Date(ms);
-
-        let yyyy = date.getFullYear();
-        let mm = addZero(date.getMonth() + 1);
-        let dd = addZero(date.getDate());
-
-        let HH = addZero(date.getHours());
-        let MM = addZero(date.getMinutes());
-        let ss = addZero(date.getSeconds());
-
-        return yyyy + "." + mm + "." + dd + " " + HH + ":" + MM + ":" + ss;
-    }
 
     /** 댓글 출력 함수 /
      * ResponseEntity<List> 로 리턴된 결과값을 받음 /
@@ -476,27 +313,198 @@
 
         replies.forEach(function(reply) {
 
-            tmp += '<li class="reply-item" data-rno=' + reply.rno
-            tmp += ' data-bno=' + reply.bno + '>'
-            if(reply.rno != reply.prno)
-                tmp += 'ㄴ '
+            tmp += '<li class="reply-item" data-rno=' + reply.rno + ' data-bno=' + reply.bno + '>'
+            if (reply.rno != reply.prno) {
+                tmp += 'ㄴ'
+            }
             tmp += ' <span class="reply-img"><i class="fa fa-user-circle" aria-hidden="true"></i></span>'
             tmp += ' <div class="reply-area">'
             tmp += ' <div class="replier">' + reply.replier + '</div>'
             tmp += ' <div class="reply-content">' + reply.reply + '</div>'
             tmp += ' <div class="reply-bottom">'
-            tmp += ' 	<span class="up_date">' + reply.up_date + '</span>'
-            tmp += '	<a href="#" class="btn-write" data-rno=' + reply.rno
+            tmp += ' 	<span class="up_date">' + dateToString(reply.up_date) + '</span>'
+            tmp += '	<a href="javascript:void(0);" class="btn-write" data-rno=' + reply.rno
                     + ' data-bno=' + reply.bno + ' data-prno=' + reply.prno + '>답글쓰기</a>'
-            tmp += '	<a href="#" class="btn-modify" data-rno=' + reply.rno
+            tmp += '	<a href="javascript:void(0);" class="btn-modify" data-rno=' + reply.rno
                     + ' data-bno=' + reply.bno + ' data-prno=' + reply.prno + '>수정</a>'
-            tmp += '	<a href="#" class="btn-delete" data-rno=' + reply.rno
+            tmp += '	<a href="javascript:void(0);" class="btn-delete" data-rno=' + reply.rno
                     + ' data-bno=' + reply.bno + ' data-prno=' + reply.prno + '>삭제</a>'
             tmp += '</div>'
             tmp += '</div>'
             tmp += '</li>'
-        })
+        });
         return tmp + "</ul>";
+    }
+
+    $(document).ready(function(){
+        showReplyList(bno);
+
+        /** 댓글 등록
+         */
+        $("#btn-write-reply").click(function(e) {
+            let reply = $('#postReply').val();
+
+            if(reply.trim() == '') {
+                alert("댓글을 입력해주세요.");
+                $('#postReply').focus();
+                return;
+            }
+
+            $.ajax({
+                type: 'POST',	// 요청 메서드
+                url: '/replies?bno=' + bno,	// 요청 URI	// /replies?bno=893 POST
+                headers: { "content-type" : "application/json" },	// 요청 헤더
+                data: JSON.stringify({bno: bno, reply: reply}),	// 서버로 전송할 데이터, stringify()로 직렬화 필요
+                success: function(result) {
+                    alert(result);
+                    showReplyList(bno);
+                },
+                error : function() { alert("Write error"); }
+            }).done(function () {
+                $("#postReply").val('');
+            })
+        });
+
+        /** 댓글 수정 모달 버튼
+         */
+        $("#replyList").on("click", "a.btn-modify", function(e){
+            let target = e.target;
+            let rno = target.getAttribute("data-rno");
+            let bno = target.getAttribute("data-bno");
+            let prno = target.getAttribute("data-prno");
+            let li = $("li[data-rno="+rno+"]");
+            let replier = $(".replier", li).first().text();
+            let reply = $(".reply-content", li).first().text();
+
+            $("#modalWin .replier").text(replier);
+            $("#modalWin textarea").text(reply);
+            $("#btn-write-modify").attr("data-rno", rno);
+            $("#btn-write-modify").attr("data-prno", prno);
+            $("#btn-write-modify").attr("data-bno", bno);
+            // 팝업창을 열고 내용을 보여준다.
+            $('.modal').css("display", "block");
+        });
+
+        /** 댓글 수정
+         */
+        $("#btn-write-modify").click(function(){
+            // 1. 변경된 내용을 서버로 전송
+            let rno = $(this).attr("data-rno");
+            let reply = $('#modReply').val();
+
+            if(reply.trim() == '') {
+                alert("댓글을 입력해주세요");
+                $('#modReply').focus()
+                return;
+            }
+
+            $.ajax({
+                type: 'PATCH',		// 요청 메서드
+                url: '/replies/' + rno,	// 요청 URI 	// /induk/replies/70	PATCH
+                headers: { "content-type" : "application/json" },	// 요청 헤더
+                data: JSON.stringify({rno:rno, reply:reply}),	// 서버로 전송할 데이터, stringify()로 직렬화 필요
+                success: function(result) {
+                    alert(result);
+                    showReplyList(bno);
+                },
+                error: function() { alert("error") }	// 에러가 발생했을 때, 호출될 함수
+            }).done(function() {
+                $('#modReply').val('');
+            });
+
+            // 2. 모달 창을 닫는다.
+            $(".close").trigger("click");
+        });
+
+        /** 댓글 삭제
+         */
+        $("#replyList").on("click", "a.btn-delete", function(e) {
+            let target = e.target;
+            let rno = target.getAttribute("data-rno");
+            let bno = target.getAttribute("data-bno");
+            $.ajax({
+                type: 'DELETE',		// 요청 메서드
+                url: '/replies/' + rno + '?bno=' + bno,	// 요청 URI
+                success: function(result) {
+                    alert(result)
+                    showReplyList(bno);
+                },
+                error: function() {alert("error")}	// 에러가 발생했을 때, 호출될 함수
+            });	// $.ajax()
+        });
+
+        /** 그냥 닫기 버튼
+         */
+        $(".close").click(function(){
+            $("#modalWin").css("display","none");
+        });
+
+        /** 대댓글
+         */
+        $("#replyList").on("click", "a.btn-write", function(e){
+            let target = e.target;
+            let rno = target.getAttribute("data-rno");
+            let bno = target.getAttribute("data-bno");
+            let prno = target.getAttribute("data-prno");
+
+            let repForm = $("#nestedReply-writebox");
+            repForm.appendTo($("li[data-rno="+rno+"]"));
+            repForm.css("display", "block");
+            repForm.attr("data-prno", prno);
+            repForm.attr("data-bno",  bno);
+        });
+
+        /** 대댓글 등록
+         */
+        $("#btn-write-nestedReply").click(function() {
+            let reply = $("textarea#nestedReply").val();
+            let prno = $("#nestedReply-writebox").attr("data-prno");
+
+            if(reply.trim() == '') {
+                alert("댓글을 입력해주세요");
+                $("textarea[id=nestedReply]").focus()
+                return;
+            }
+
+            $.ajax({
+                type: 'POST',		// 요청 메서드
+                url: '/replies?bno=' + bno	,	// 요청 URI	// /induk/replies?bno=893	POST
+                headers: { "content-type" : "application/json"},	// 요청 헤더
+                data: JSON.stringify({prno:prno, bno:bno, reply:reply}),	// 서버로 전송할 데이터, stringify로 직렬화 필요
+                success: function(result) {
+                    alert(result);
+                    showReplyList(bno);
+                },
+                error: function() { alert("error") }	// 에러가 발생했을 때, 호출될 함수
+            });	// $.ajax()
+        });
+
+        /** 대댓 취소
+         */
+        $("#btn-cancel-nestedReply").click(function(e){
+            $("#nestedReply-writebox").css("display", "none");
+        });
+
+    });
+
+    //---------------------------------------------Utils-------------------------------------------------//
+
+    let addZero = function(value) {
+        return value > 9 ? value : "0" + value;
+    }
+
+    let dateToString = function(ms) {
+        let date = new Date(ms);
+
+        let yyyy = date.getFullYear();
+        let mm = addZero(date.getMonth() + 1);
+        let dd = addZero(date.getDate());
+
+        let HH = addZero(date.getHours());
+        let MM = addZero(date.getMinutes());
+        let ss = addZero(date.getSeconds());
+
+        return yyyy + "." + mm + "." + dd + " " + HH + ":" + MM + ":" + ss;
     }
 </script>
 </body>

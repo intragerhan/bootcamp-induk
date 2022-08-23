@@ -21,20 +21,20 @@ public class ReplyController {
 	private final ReplyService replyService;
 
 	// 댓글을 등록하는 메서드
-	@PostMapping("/replies")	// /replies?bno=871	POST
 	@ResponseBody
+	@PostMapping("/replies")	// /replies?bno=871	POST
 	public ResponseEntity<String> write(@RequestBody ReplyDto dto, Integer bno, HttpSession session, Model m) {
 //		String commenter = (String) session.getAttribute("id");
 		String replier = "asdf";
 		dto.setReplier(replier);
 		dto.setBno(bno);
 
-		List<ReplyDto> list = null;
 		try {
 			if(replyService.writeReply(dto) != 1)
 				throw new Exception("Write failed");
-			list = replyService.readReplyList(bno);
-			m.addAttribute("list", list);
+//			List<ReplyDto> list = null;
+//			list = replyService.readReplyList(bno);
+//			m.addAttribute("list", list);
 
 			return new ResponseEntity<>("Write_success", HttpStatus.OK);
 		} catch(Exception e) {
