@@ -221,29 +221,7 @@
 </head>
 <body>
 <div id="replyForm">
-    <div id="replyList" th:fragment="replyList">
-        <ul>
-            <th:block th:each="comment : ${list}">
-                <li class="reply-item" th:attr="data-rno=${comment.rno},data-bno=${comment.bno}">
-                    <th:block th:if="${comment.rno != comment.prno}" th:text="ㄴ"></th:block>
-                    <span class="reply-img"><i class="fa fa-user-circle" aria-hidden="true"></i></span>
-                    <div class="reply-area">
-                        <div class="replier">[[${comment.replier}]]</div>
-                        <div class="reply-content">[[${comment.reply}]]</div>
-                        <div class="reply-bottom">
-                            <span class="up_date">[[${comment.up_date}]]</span>
-                            <a href="#" class="btn-write" th:attr="data-rno=${comment.rno},
-                            data-bno=${comment.bno},data-prno=${comment.prno}">답글쓰기</a>
-                            <a href="#" class="btn-modify" th:attr="data-rno=${comment.rno},
-                            data-bno=${comment.bno},data-prno=${comment.prno}">수정</a>
-                            <a href="#" class="btn-delete" th:attr="data-rno=${comment.rno},
-                            data-bno=${comment.bno},data-prno=${comment.prno}">삭제</a>
-                        </div>
-                    </div>
-                </li>
-            </th:block>
-        </ul>
-    </div>
+    <div id="replyList" th:fragment="replyList"></div>
     <div class="paging-container">
         <div class="paging">
             <a class="page" href="#">&lt;</a>
@@ -311,108 +289,37 @@
 
     let bno = 355;
 
-    let addZero = function(value = 1){
-        return value > 9 ? value : "0" + value;
-    }
-
-    let dateToString = function(ms = 0) {
-        let date = new Date(ms);
-
-        let yyyy = date.getFullYear();
-        let mm = addZero(date.getMonth() + 1);
-        let dd = addZero(date.getDate());
-
-        let HH = addZero(date.getHours());
-        let MM = addZero(date.getMinutes());
-        let ss = addZero(date.getSeconds());
-
-        return yyyy + "." + mm + "." + dd + " " + HH + ":" + MM + ":" + ss;
-    }
-
-    /**
-     * d
-     */
-    function printReplyList(bno) {
-        $.ajax({
-            type: "GET",
-            url: "/replies?bno=" + bno,
-            success: function (result) {
-                $("#replyList").html(toHTML(result));
-            },
-            error: function() { alert('print error') }
-        });
-    }
-
-    let showList = function(bno) {
-        $.ajax({
-            type: 'GET',	// 요청 메서드
-            url: '/replies?bno=' + bno,	// 요청 URI
-            success: function(result) {
-                alert("댓글창");
-                // $("#replyList").html(toHTML(result)); // 서버로부터 응답이 도착하면 호출될 함수
-            },
-            error: function() { alert("error") } // 에러가 발생했을 때 호출될 함수
-        }).done(function (fragment) {
-            $("#replyList").replaceWith.html(toHTML(fragment));
-        });	// $.ajax()
-    }
-
-    let toHTML = function(replies) {
-        let tmp = "<ul>";
-
-        replies.forEach(function(reply) {
-
-            tmp += '<li class="reply-item" data-rno=' + reply.rno
-            tmp += ' data-bno=' + reply.bno + '>'
-            if(reply.rno != reply.prno)
-                tmp += 'ㄴ'
-            tmp += ' <span class="reply-img"><i class="fa fa-user-circle" aria-hidden="true"></i></span>'
-            tmp += ' <div class="reply-area">'
-            tmp += ' <div class="replier">' + reply.replier + '</div>'
-            tmp += ' <div class="reply-content">' + reply.reply + '</div>'
-            tmp += ' <div class="reply-bottom">'
-            tmp += ' 	<span class="up_date">' + reply.up_date + '</span>'
-            tmp += '	<a href="#" class="btn-write" data-rno=' + reply.rno
-                    + ' data-bno=' + reply.bno + ' data-prno=' + reply.prno + '>답글쓰기</a>'
-            tmp += '	<a href="#" class="btn-modify" data-rno=' + reply.rno
-                    + ' data-bno=' + reply.bno + ' data-prno=' + reply.prno + '>수정</a>'
-            tmp += '	<a href="#" class="btn-delete" data-rno=' + reply.rno
-                    + ' data-bno=' + reply.bno + ' data-prno=' + reply.prno + '>삭제</a>'
-            tmp += '</div>'
-            tmp += '</div>'
-            tmp += '</li>'
-        })
-
-        return tmp + "</ul>";
-    }
-
     $(document).ready(function(){
-        printReplyList(bno);
+        showReplyList(bno);
 
-        /* POST(Create) */
+        /** 댓글 등록
+         *
+         */
         $("#btn-write-reply").click(function(e) {
-            let reply = $("textarea[id=reply]").val();
+            let reply = $('textarea.reply').attr('id');
 
             if(reply.trim() == '') {
                 alert("댓글을 입력해주세요.");
-                $("textarea[id=reply]").focus()
+                $('textarea.reply').attr('id').focus();
                 return;
             }
 
             $.ajax({
                 type: 'POST',	// 요청 메서드
-                url: '/replies?bno=' + bno,	// 요청 URI	// /induk/replies?bno=893 POST
+                url: '/replies?bno=' + bno,	// 요청 URI	// /replies?bno=893 POST
                 headers: { "content-type" : "application/json" },	// 요청 헤더
                 data: JSON.stringify({bno: bno, reply: reply}),	// 서버로 전송할 데이터, stringify()로 직렬화 필요
                 success: function(result) {
                     alert(result);
-                    printReplyList(bno);
+                    showReplyList(bno);
                 },
                 error : function() { alert("Write error"); }
+            }).done(function (result) {
+                alert(result);
+                showReplyList(bno);
+            }).fail(function (error) {
+                alert(error);
             })
-            //         .done(function (fragment) {
-            //     $("#replyList").replaceWith(printReplyList(bno));
-            // });
         });
 
         /* GET 대댓글 */
@@ -446,7 +353,7 @@
                 data: JSON.stringify({prno:prno, bno:bno, reply:reply}),	// 서버로 전송할 데이터, stringify로 직렬화 필요
                 success: function(result) {
                     alert(result);
-                    showList(bno);
+                    showReplyList(bno);
                 },
                 error: function() { alert("error") }	// 에러가 발생했을 때, 호출될 함수
             });	// $.ajax()
@@ -466,7 +373,8 @@
                 url: '/replies/' + rno + '?bno=' + bno,	// 요청 URI
                 success: function(result) {
                     alert(result)
-                    showList(bno);
+                    showReplyList(bno);
+                    $("#replyList").html(toHTML(result));
                 },
                 error: function() {alert("error")}	// 에러가 발생했을 때, 호출될 함수
             })	// $.ajax()
@@ -516,7 +424,7 @@
 
             // 2. 모달 창을 닫는다.
             $(".close").trigger("click");
-            showList(bno);
+            showReplyList(bno);
         });
 
 
@@ -526,6 +434,70 @@
 
     });
 
+    //---------------------------------------------Utils-------------------------------------------------//
+
+    let addZero = function(value = 1){
+        return value > 9 ? value : "0" + value;
+    }
+
+    let dateToString = function(ms = 0) {
+        let date = new Date(ms);
+
+        let yyyy = date.getFullYear();
+        let mm = addZero(date.getMonth() + 1);
+        let dd = addZero(date.getDate());
+
+        let HH = addZero(date.getHours());
+        let MM = addZero(date.getMinutes());
+        let ss = addZero(date.getSeconds());
+
+        return yyyy + "." + mm + "." + dd + " " + HH + ":" + MM + ":" + ss;
+    }
+
+    /** 댓글 출력 함수 /
+     * ResponseEntity<List> 로 리턴된 결과값을 받음 /
+     * th:fragment 들어가야 함.
+     * @Param {number} bno 글 번호 필요함
+     * @see https://kim-oriental.tistory.com/13
+     */
+    function showReplyList(bno) {
+        $.ajax({
+            type: "GET",
+            url: "/replies?bno=" + bno,
+            success: function (result) {
+                $("#replyList").html(toHTML(result));
+            },
+            error: function() { alert('print error') }
+        });
+    }
+
+    function toHTML(replies) {
+        let tmp = "<ul>";
+
+        replies.forEach(function(reply) {
+
+            tmp += '<li class="reply-item" data-rno=' + reply.rno
+            tmp += ' data-bno=' + reply.bno + '>'
+            if(reply.rno != reply.prno)
+                tmp += 'ㄴ '
+            tmp += ' <span class="reply-img"><i class="fa fa-user-circle" aria-hidden="true"></i></span>'
+            tmp += ' <div class="reply-area">'
+            tmp += ' <div class="replier">' + reply.replier + '</div>'
+            tmp += ' <div class="reply-content">' + reply.reply + '</div>'
+            tmp += ' <div class="reply-bottom">'
+            tmp += ' 	<span class="up_date">' + reply.up_date + '</span>'
+            tmp += '	<a href="#" class="btn-write" data-rno=' + reply.rno
+                    + ' data-bno=' + reply.bno + ' data-prno=' + reply.prno + '>답글쓰기</a>'
+            tmp += '	<a href="#" class="btn-modify" data-rno=' + reply.rno
+                    + ' data-bno=' + reply.bno + ' data-prno=' + reply.prno + '>수정</a>'
+            tmp += '	<a href="#" class="btn-delete" data-rno=' + reply.rno
+                    + ' data-bno=' + reply.bno + ' data-prno=' + reply.prno + '>삭제</a>'
+            tmp += '</div>'
+            tmp += '</div>'
+            tmp += '</li>'
+        })
+        return tmp + "</ul>";
+    }
 </script>
 </body>
 </html>
