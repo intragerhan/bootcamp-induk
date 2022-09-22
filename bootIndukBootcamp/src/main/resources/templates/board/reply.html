@@ -224,18 +224,20 @@
     <div id="replyList" th:fragment="replyList"></div>
     <div class="paging-container">
         <div class="paging">
-            <a class="page" href="#">&lt;</a>
-            <a class="page" href="#">1</a>
-            <a class="page" href="#">2</a>
-            <a class="page" href="#">3</a>
-            <a class="page" href="#">4</a>
-            <a class="page paging-active" href="#">5</a>
-            <a class="page" href="#">6</a>
-            <a class="page" href="#">7</a>
-            <a class="page" href="#">8</a>
-            <a class="page" href="#">9</a>
-            <a class="page" href="#">10</a>
-            <a class="page" href="#">&gt;</a>
+            <th:block th:if="${totalCnt==null || totalCnt==0}">
+                <div> 게시물이 없습니다. </div>
+            </th:block>
+            <th:block th:if="${totalCnt!=null && totalCnt!=0}">
+                <th:block th:if="${ph.showPrev}">
+                    <a class="page" th:href="@{'/board/list' + ${ph.sc.getQueryString(ph.beginPage - 1)}}">&lt;</a>
+                </th:block>
+                <th:block th:each="i : ${#numbers.sequence(ph.beginPage, ph.endPage)}">
+                    <a th:class="'page' +  ${i == ph.sc.page? 'paging-active' : ''}" th:href="@{'/board/list' + ${ph.sc.getQueryString(i)}}">[[${i}]]</a>
+                </th:block>
+                <th:block th:if="${ph.showNext}">
+                    <a class="page" th:href="@{'/board/list' + ${ph.sc.getQueryString(ph.endPage + 1)}}">&gt;</a>
+                </th:block>
+            </th:block>
         </div>
     </div>
     <!-- 댓글 -->
@@ -288,8 +290,6 @@
     </div>
 </div>
 <script>
-
-    let bno = 355;
 
     /** 댓글 출력 함수 /
      * ResponseEntity<List> 로 리턴된 결과값을 받음 /
@@ -362,7 +362,7 @@
                 error : function() { alert("Write error"); }
             }).done(function () {
                 $("#postReply").val('');
-            })
+            });
         });
 
         /** 댓글 수정 모달 버튼

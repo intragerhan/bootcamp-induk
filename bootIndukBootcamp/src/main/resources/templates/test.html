@@ -100,7 +100,7 @@
           				showList(bno);
            			},
            			error : function() { alert("Write error"); }
-            	})
+            	});
             });
             
             $("#modBtn").click(function() {
@@ -132,7 +132,7 @@
 				
             	// 2. 답글을 입력할 폼을 보여준다.
             	$("#nestedReplyForm").css("display", "block");
-            })
+            });
             
             $("#replyList").on("click", ".modBtn", function() {
             	let rno = $(this).parent().attr("data-rno");
@@ -143,7 +143,7 @@
             	$("input[name=reply]").val(reply);
             	// 2. rno 전달하기
             	$("#modBtn").attr("data-rno", rno);
-            })
+            });
             
            	$("#replyList").on("click", ".delBtn", function() {
             	let rno = $(this).parent().attr("data-rno");
@@ -156,8 +156,8 @@
             			showList(bno);
             		},
             		error: function() {alert("error")}	// 에러가 발생했을 때, 호출될 함수
-            	})	// $.ajax()
-            })
+            	});	// $.ajax()
+            });
         });
 
     </script>
