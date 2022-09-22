@@ -6,20 +6,20 @@
 
     <insert id="insertUser" parameterType="com.bootcamp.induk.domain.UserDto">
         INSERT INTO user_info
-            (id, pwd, name, email, birth, sns, reg_date)
+            (id, pwd, name, email, birth, reg_date)
         VALUES
-            (#{id}, #{pwd}, #{name}, #{email}, #{birth}, #{sns}, sysdate)
+            (#{id}, #{pwd}, #{name}, #{email}, #{birth}, sysdate)
     </insert>
 
     <select id="selectUser" parameterType="String" resultType="com.bootcamp.induk.domain.UserDto">
-        SELECT id, pwd, name, email, birth, sns, reg_date
+        SELECT id, pwd, name, email, birth, reg_date
         FROM user_info
         WHERE
               id = #{id}
     </select>
 
     <select id="loginUser" parameterType="map" resultType="com.bootcamp.induk.domain.UserDto">
-        SELECT id, pwd, name, email, birth, sns, reg_date
+        SELECT id, pwd, name, email, birth, reg_date
         FROM user_info
         WHERE
             id = #{id} AND pwd = #{pwd}

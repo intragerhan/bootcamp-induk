@@ -22,21 +22,23 @@ public class ReplyController {
 
 	private final ReplyService replyService;
 
-	@GetMapping("/replys")
+	@GetMapping("/replies/{bno}")
 	public String replies(@PathVariable Integer bno, SearchCondition sc, Model m) throws Exception {
 		List<ReplyDto> list = null;
 		int replyCount = replyService.getCount(bno);
 		PageHandler pageHandler = new PageHandler(replyCount, sc);
 		list = replyService.readReplyList(bno);
-		m.addAttribute("", list);
+		m.addAttribute("list", list);
+		m.addAttribute("replyCount", replyCount);
 		m.addAttribute("ph", pageHandler);
+		m.addAttribute("bno", bno);
 		return "board/reply";
 	}
 
 	// 댓글을 등록하는 메서드
 	@ResponseBody
-	@PostMapping("/replies")	// /replies?bno=871	POST
-	public ResponseEntity<String> write(@RequestBody ReplyDto dto, Integer bno, HttpSession session, Model m) {
+	@PostMapping("/replies/{bno}")	// /replies/871	POST
+	public ResponseEntity<String> write(@RequestBody ReplyDto dto, @PathVariable Integer bno, HttpSession session, Model m) {
 		String replier = (String) session.getAttribute("id");
 		dto.setReplier(replier);
 		dto.setBno(bno);
@@ -56,7 +58,8 @@ public class ReplyController {
 	}
 
 	// 지정된 게시물의 모든 댓글을 가져오는 메서드
-	@GetMapping("/replies")	// /replies?bno=874	GET
+	@ResponseBody
+	@GetMapping("/replies/{bno}/list")	// /replies/874	GET
 	public ResponseEntity<List<ReplyDto>> list(@PathVariable Integer bno) {
 		List<ReplyDto> list = null;
 		try {
@@ -69,9 +72,10 @@ public class ReplyController {
 	}
 
 	// 댓글을 수정하는 메서드
+	@ResponseBody
 	@PatchMapping("/replies/{rno}")	// /replies/70 PATCH
-	public ResponseEntity<String> modify(@PathVariable Integer rno, @RequestBody ReplyDto dto) {
-		String replier = "asdf";
+	public ResponseEntity<String> modify(@PathVariable Integer rno, @RequestBody ReplyDto dto, HttpSession session) {
+		String replier = (String) session.getAttribute("id");
 
 		dto.setReplier(replier);
 		dto.setRno(rno);
@@ -89,6 +93,7 @@ public class ReplyController {
 	}
 
 	// 지정된 댓글을 삭제하는 메서드
+	@ResponseBody
 	@DeleteMapping("/replies/{rno}")	// DELETE /replies/1?bno=871 <-- 삭제할 댓글 번호
 	public ResponseEntity<String> remove(@PathVariable Integer rno, Integer bno, HttpSession session) {
 		String replier = (String) session.getAttribute("id");

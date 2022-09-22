@@ -224,25 +224,26 @@
     <div id="replyList" th:fragment="replyList"></div>
     <div class="paging-container">
         <div class="paging">
-            <th:block th:if="${totalCnt==null || totalCnt==0}">
-                <div> 게시물이 없습니다. </div>
+            <th:block th:if="${replyCount==null || replyCount==0}">
+                <div> 댓글이 없습니다. </div>
             </th:block>
-            <th:block th:if="${totalCnt!=null && totalCnt!=0}">
+            <th:block th:if="${replyCount!=null && replyCount!=0}">
                 <th:block th:if="${ph.showPrev}">
-                    <a class="page" th:href="@{'/board/list' + ${ph.sc.getQueryString(ph.beginPage - 1)}}">&lt;</a>
+                    <a class="page" th:href="@{'/replies/' + ${bno} + ${ph.sc.getQueryString(ph.beginPage - 1)}}">&lt;</a>
                 </th:block>
                 <th:block th:each="i : ${#numbers.sequence(ph.beginPage, ph.endPage)}">
-                    <a th:class="'page' +  ${i == ph.sc.page? 'paging-active' : ''}" th:href="@{'/board/list' + ${ph.sc.getQueryString(i)}}">[[${i}]]</a>
+                    <a th:class="'page' +  ${i == ph.sc.page? 'paging-active' : ''}" th:href="@{'/replies/' + ${bno}
+                    + ${ph.sc.getQueryString(i)}}">[[${i}]]</a>
                 </th:block>
                 <th:block th:if="${ph.showNext}">
-                    <a class="page" th:href="@{'/board/list' + ${ph.sc.getQueryString(ph.endPage + 1)}}">&gt;</a>
+                    <a class="page" th:href="@{'/replies/' + ${bno} + ${ph.sc.getQueryString(ph.endPage + 1)}}">&gt;</a>
                 </th:block>
             </th:block>
         </div>
     </div>
     <!-- 댓글 -->
     <div id="reply-writebox">
-        <div class="replier replier-writebox">asdf</div>
+        <div class="replier replier-writebox">[[${session.id}]]</div>
         <div class="reply-writebox-content">
             <textarea name="postReply" id="postReply" cols="30" rows="5" placeholder="댓글을 남겨보세요"></textarea>
         </div>
@@ -256,7 +257,7 @@
 
 <!-- 대댓글 -->
 <div id="nestedReply-writebox">
-    <div class="replier replier-writebox">asdf</div>
+    <div class="replier replier-writebox">[[${session.id}]]</div>
     <div class="nestedReply-writebox-content">
         <textarea name="reply" id="nestedReply" cols="30" rows="3" placeholder="답글을 남겨보세요"></textarea>
     </div>
@@ -289,7 +290,9 @@
         </p>
     </div>
 </div>
-<script>
+<script th:inline="javascript">
+
+    let bno = [[${bno}]];
 
     /** 댓글 출력 함수 /
      * ResponseEntity<List> 로 리턴된 결과값을 받음 /
@@ -300,7 +303,7 @@
     function showReplyList(bno) {
         $.ajax({
             type: "GET",
-            url: "/replies?bno=" + bno,
+            url: "/replies/" + bno + "/list",
             success: function (result) {
                 $("#replyList").html(toHTML(result));
             },
@@ -352,7 +355,7 @@
 
             $.ajax({
                 type: 'POST',	// 요청 메서드
-                url: '/replies?bno=' + bno,	// 요청 URI	// /replies?bno=893 POST
+                url: '/replies/' + bno,	// 요청 URI	// /replies?bno=893 POST
                 headers: { "content-type" : "application/json" },	// 요청 헤더
                 data: JSON.stringify({bno: bno, reply: reply}),	// 서버로 전송할 데이터, stringify()로 직렬화 필요
                 success: function(result) {
@@ -468,7 +471,7 @@
 
             $.ajax({
                 type: 'POST',		// 요청 메서드
-                url: '/replies?bno=' + bno	,	// 요청 URI	// /induk/replies?bno=893	POST
+                url: '/replies/' + bno	,	// 요청 URI	// /induk/replies?bno=893	POST
                 headers: { "content-type" : "application/json"},	// 요청 헤더
                 data: JSON.stringify({prno:prno, bno:bno, reply:reply}),	// 서버로 전송할 데이터, stringify로 직렬화 필요
                 success: function(result) {

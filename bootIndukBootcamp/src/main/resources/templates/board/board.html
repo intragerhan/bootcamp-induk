@@ -88,7 +88,7 @@
 			</th:block>
 			<a th:href="@{'/board/list' + ${ph.sc.queryString}}" class="btn btn-list">
 				<i class="fa fa-bars"></i> 목록</a>
-			<a th:href="@{'/reply/bno=' + ${boardDto.bno}  + '&' +  ${ph.sc.queryString}}" class="btn btn-list">
+			<a th:href="@{'/replies/' + ${boardDto.bno}}" class="btn btn-list">
 				<i class="fa fa-reply"></i> 댓글</a>
 		</form>
 	</div>

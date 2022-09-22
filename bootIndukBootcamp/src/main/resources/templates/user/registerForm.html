@@ -62,9 +62,6 @@
             margin-bottom: 20px;
         }
 
-        .sns-chk {
-            margin-top: 5px;
-        }
 	</style>
 </head>
 <body>
@@ -73,26 +70,21 @@
 			<div class="title">Register</div>
 			<div id="msg" class="msg"></div>
 
-			<label for="id">아이디</label>
-			<input class="input-field" id="id" type="text" name="id" th:field="*{id}" placeholder="8~12자리의 영대소문자와 숫자 조합">
+			<label th:for="id">아이디</label>
+			<input class="input-field" type="text" th:field="*{id}" placeholder="8~12자리의 영대소문자와 숫자 조합">
 
-			<label for="pwd">비밀번호</label>
-			<input class="input-field" id="pwd" type="text" name="pwd" th:field="*{pwd}" placeholder="8~12자리의 영대소문자와 숫자 조합">
+			<label th:for="pwd">비밀번호</label>
+			<input class="input-field" type="text" th:field="*{pwd}" placeholder="8~12자리의 영대소문자와 숫자 조합">
 
-			<label for="name">이름</label>
-			<input class="input-field" id="name" type="text" name="name" th:field="*{name}" placeholder="홍길동">
+			<label th:for="name">이름</label>
+			<input class="input-field" type="text" th:field="*{name}" placeholder="홍길동">
 
-			<label for="email">이메일</label>
-			<input class="input-field" id="email" type="text" name="email" th:field="*{email}" placeholder="example@study.ac.kr">
+			<label th:for="email">이메일</label>
+			<input class="input-field" type="text" th:field="*{email}" placeholder="example@study.ac.kr">
 
-			<label for="birth">생일</label>
-			<input class="input-field" id="birth" type="text" name="birth" th:field="*{birth}" placeholder="2022-07-24">
+			<label th:for="birth">생일</label>
+			<input class="input-field" type="text" th:field="*{birth}" placeholder="2022-07-24">
 
-			<div class="sns-chk">
-				<label><input type="checkbox" name="sns" value="facebook" />페이스북</label>
-				<label><input type="checkbox" name="sns" value="kakao" />카카오</label>
-				<label><input type="checkbox" name="sns" value="google" />구글</label>
-			</div>
 			<button type="submit">회원 가입</button>
 
 	</form>

@@ -5,8 +5,10 @@ import com.bootcamp.induk.mapper.UserMapper;
 import com.bootcamp.induk.service.interfaces.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 

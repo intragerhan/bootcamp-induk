@@ -37,7 +37,8 @@ public class RegisterController {
 	}
 	
 	@GetMapping("/add")
-	public String regiter() {
+	public String register(Model model) {
+		model.addAttribute("user", new UserDto());
 		return "user/registerForm";
 	}
 	
