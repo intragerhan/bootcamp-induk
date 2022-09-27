@@ -14,7 +14,7 @@
 
 ## 주요 기능 사진 
 
-### 게시글 전체 출력
+### 게시글 전체 출력 (With Pagination 기능)
 ![image](https://user-images.githubusercontent.com/77195486/192519323-d7750448-8990-4371-8e5d-8aa477acd852.png)
 
 ### 키워드를 가지고 게시글 검색했을 때 (With Pagination 기능)
