@@ -12,10 +12,12 @@
 # ERD
 ![IndukBootcamp](https://user-images.githubusercontent.com/77195486/192537648-21f326bd-d5b6-4b3d-a658-108a917cbb09.png)
 
-### 그냥 전체 출력
+## 주요 기능 사진 
+
+### 게시글 전체 출력
 ![image](https://user-images.githubusercontent.com/77195486/192519323-d7750448-8990-4371-8e5d-8aa477acd852.png)
 
-### 키워드를 가지고 검색했을 때
+### 키워드를 가지고 게시글 검색했을 때 (With Pagination 기능)
 ![image](https://user-images.githubusercontent.com/77195486/192518716-9cb84c96-2fa4-4671-8f75-ec0a85d4c5fe.png)
 
 ### 댓글과 대댓글(Ajax)
