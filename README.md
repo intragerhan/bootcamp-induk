@@ -14,9 +14,19 @@
 ## 이전 개발 환경
 - Eclipse (STS 3)
 - JDK 1.8
-- Apache Tomcat 
-- Spring Framework 5.0.7
-- MyBatis 
+- Apache Tomcat
+- Spring Framework 5.0.7 (MVC Project)
+- MySQL 8.0.30
+- MyBatis 3+
+- JSP
+
+## 마이그레이션 후 개발 환경
+- IntelliJ IDEA
+- JDK 11
+- Spring Boot 2.6.10
+- ojdbc6
+- MyBaits 3+
+- Thymeleaf (Boot-starter 2.2.2)
 
 ## ERD
 ![IndukBootcamp](https://user-images.githubusercontent.com/77195486/192537648-21f326bd-d5b6-4b3d-a658-108a917cbb09.png)
